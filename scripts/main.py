@@ -10,7 +10,7 @@ from glyphs import Glyphs
 from browser import Browser
 from constants import *
 
-class OpenGLRobots:
+class SaltwashAR:
  
     # constants
     INVERSE_MATRIX = np.array([[ 1.0, 1.0, 1.0, 1.0],
@@ -165,12 +165,12 @@ class OpenGLRobots:
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
         glutInitWindowSize(640, 480)
         glutInitWindowPosition(800, 400)
-        self.window_id = glutCreateWindow("OpenGL Robots")
+        self.window_id = glutCreateWindow("SaltwashAR")
         glutDisplayFunc(self._draw_scene)
         glutIdleFunc(self._draw_scene)
         self._init_gl(640, 480)
         glutMainLoop()
  
-# run an instance of OpenGL Robots
-openGLRobots = OpenGLRobots()
-openGLRobots.main()
+# run an instance of SaltwashAR
+saltwashAR = SaltwashAR()
+saltwashAR.main()

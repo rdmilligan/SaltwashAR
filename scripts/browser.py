@@ -22,7 +22,7 @@ class Browser:
     def _process(self):
         while True:
             if self.category:
-                # store current category
+                # obtain current category
                 current_category = self.category
 
                 # browser asks question
@@ -33,7 +33,7 @@ class Browser:
                 if not answer: continue
 
                 # get url from search engine
-                url = search_engine(self.category, answer)
+                url = search_engine(current_category, answer)
                 if not url: continue
 
                 # browser tells user that content is being retrieved
@@ -50,7 +50,7 @@ class Browser:
                 # speak each line of text        
                 try:
                     for line in text.split('\n'):
-                        if self.category != current_category: break
+                        if current_category != self.category: break
                                 
                         if len(line) >= self.MIN_LINE_LENGTH:
                             self.text_to_speech.convert(line)
