@@ -8,13 +8,14 @@ class Robot:
         self.frames_length = 0
         self.frame_index = 0
         self.is_detected = False
-                 
+
     # load frames from directory
-    def load(self, directory):
+    def load(self, directory, animation):
         os.chdir(directory)
         
         for file in glob.glob("*.obj"):
             self.frames.append(OBJ(file))
+            if not animation: break 
 
         os.chdir('..')
         self.frames_length = len(self.frames)

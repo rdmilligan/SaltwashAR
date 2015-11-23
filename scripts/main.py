@@ -8,6 +8,7 @@ from robot import Robot
 from webcam import Webcam
 from glyphs import Glyphs
 from browser import Browser
+from configprovider import ConfigProvider
 from constants import *
 
 class SaltwashAR:
@@ -32,6 +33,9 @@ class SaltwashAR:
 
         # initialise browser
         self.browser = Browser()
+        
+        # initialise config
+        self.config_provider = ConfigProvider()
 
         # initialise texture
         self.texture_background = None
@@ -48,8 +52,8 @@ class SaltwashAR:
         glMatrixMode(GL_MODELVIEW)
         
         # load robots
-        self.rocky_robot.load('rocky_robot')
-        self.sporty_robot.load('sporty_robot')
+        self.rocky_robot.load('rocky_robot', self.config_provider.animation)
+        self.sporty_robot.load('sporty_robot', self.config_provider.animation)
         
         # start threads
         self.webcam.start()
@@ -63,9 +67,26 @@ class SaltwashAR:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
 
+        # reset robots
+        self.rocky_robot.is_detected = False
+        self.sporty_robot.is_detected = False
+
         # get image from webcam
         image = self.webcam.get_current_frame()
 
+        # handle background
+        self._handle_background(image)
+
+        # handle glyphs
+        self._handle_glyphs(image)
+       
+        # handle browser
+        self._handle_browser()
+
+        glutSwapBuffers()
+
+    def _handle_background(self, image):
+        
         # convert image to OpenGL texture format
         bg_image = cv2.flip(image, 0)
         bg_image = Image.fromarray(bg_image)     
@@ -83,23 +104,13 @@ class SaltwashAR:
         glBindTexture(GL_TEXTURE_2D, self.texture_background)
         glPushMatrix()
         glTranslatef(0.0,0.0,-10.0)
-        self._draw_background()
+        glBegin(GL_QUADS)
+        glTexCoord2f(0.0, 1.0); glVertex3f(-4.0, -3.0, 0.0)
+        glTexCoord2f(1.0, 1.0); glVertex3f( 4.0, -3.0, 0.0)
+        glTexCoord2f(1.0, 0.0); glVertex3f( 4.0,  3.0, 0.0)
+        glTexCoord2f(0.0, 0.0); glVertex3f(-4.0,  3.0, 0.0)
+        glEnd( )
         glPopMatrix()
-
-        # handle glyphs
-        self.rocky_robot.is_detected = False
-        self.sporty_robot.is_detected = False
-        self._handle_glyphs(image)
-       
-        # handle browser
-        if self.rocky_robot.is_detected:
-            self.browser.load(ROCK)
-        elif self.sporty_robot.is_detected:
-            self.browser.load(SPORT)
-        else:
-            self.browser.halt()
-
-        glutSwapBuffers()
 
     def _handle_glyphs(self, image):
 
@@ -150,14 +161,18 @@ class SaltwashAR:
             glColor3f(1.0, 1.0, 1.0)
             glPopMatrix()
 
-    def _draw_background(self):
-        # draw background
-        glBegin(GL_QUADS)
-        glTexCoord2f(0.0, 1.0); glVertex3f(-4.0, -3.0, 0.0)
-        glTexCoord2f(1.0, 1.0); glVertex3f( 4.0, -3.0, 0.0)
-        glTexCoord2f(1.0, 0.0); glVertex3f( 4.0,  3.0, 0.0)
-        glTexCoord2f(0.0, 0.0); glVertex3f(-4.0,  3.0, 0.0)
-        glEnd( )
+    def _handle_browser(self):
+
+        # check browser enabled
+        if not self.config_provider.browser: return
+
+        # handle browser
+        if self.rocky_robot.is_detected:
+            self.browser.load(ROCK)
+        elif self.sporty_robot.is_detected:
+            self.browser.load(SPORT)
+        else:
+            self.browser.halt()
 
     def main(self):
         # setup and run OpenGL
