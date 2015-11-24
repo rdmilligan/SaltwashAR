@@ -4,11 +4,11 @@ from OpenGL.GLU import *
 import cv2
 from PIL import Image
 import numpy as np
+from configprovider import ConfigProvider
 from robot import Robot
 from webcam import Webcam
 from glyphs import Glyphs
 from browser import Browser
-from configprovider import ConfigProvider
 from constants import *
 
 class SaltwashAR:
@@ -20,6 +20,9 @@ class SaltwashAR:
                                [ 1.0, 1.0, 1.0, 1.0]])
 
     def __init__(self):
+        # initialise config
+        self.config_provider = ConfigProvider()
+
         # initialise robots
         self.rocky_robot = Robot()
         self.sporty_robot = Robot()
@@ -32,10 +35,10 @@ class SaltwashAR:
         self.glyphs_cache = None
 
         # initialise browser
-        self.browser = Browser()
+        self.browser = None
         
-        # initialise config
-        self.config_provider = ConfigProvider()
+        if self.config_provider.browser:
+            self.browser = Browser()
 
         # initialise texture
         self.texture_background = None
@@ -57,7 +60,9 @@ class SaltwashAR:
         
         # start threads
         self.webcam.start()
-        self.browser.start()
+        
+        if self.browser: 
+            self.browser.start()
 
         # assign texture
         glEnable(GL_TEXTURE_2D)
@@ -163,8 +168,8 @@ class SaltwashAR:
 
     def _handle_browser(self):
 
-        # check browser enabled
-        if not self.config_provider.browser: return
+        # check browser instantiated
+        if not self.browser: return
 
         # handle browser
         if self.rocky_robot.is_detected:
