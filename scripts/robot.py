@@ -1,33 +1,40 @@
-import os, glob
-from objloader import *
+from rocky_robot_frames import *
+from sporty_robot_frames import *
 
 class Robot:
 
     def __init__(self):
-        self.frames = []
-        self.frames_length = 0
-        self.frame_index = 0
+        self.body_frame = None
+        self.head_frames = []
+        self.head_frames_length = 0
+        self.head_frame_index = 0
         self.is_detected = False
-
-    # load frames from directory
-    def load(self, directory, animation):
-        os.chdir(directory)
-        
-        for file in glob.glob("*.obj"):
-            self.frames.append(OBJ(file))
-            if not animation: break 
-
-        os.chdir('..')
-        self.frames_length = len(self.frames)
 
     # get next frame
     def next_frame(self):
-        self.frame_index += 1
+        self.head_frame_index += 1
 
-        if self.frame_index >= self.frames_length:
-            self.frame_index = 0
+        if self.head_frame_index >= self.head_frames_length:
+            self.head_frame_index = 0
 
-        return self.frames[self.frame_index].gl_list
+        glCallList(self.body_frame)
+        glCallList(self.head_frames[self.head_frame_index])
+
+class RockyRobot(Robot):
+ 
+    # load frames
+    def load_frames(self, animation):
+        self.body_frame = rocky_robot_body_frame()
+        self.head_frames = rocky_robot_head_frames(animation)
+        self.head_frames_length = len(self.head_frames)
+
+class SportyRobot(Robot):
+ 
+    # load frames
+    def load_frames(self, animation):
+        self.body_frame = sporty_robot_body_frame()
+        self.head_frames = sporty_robot_head_frames(animation)
+        self.head_frames_length = len(self.head_frames)
 
         
         

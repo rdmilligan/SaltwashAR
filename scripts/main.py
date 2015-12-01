@@ -5,7 +5,7 @@ import cv2
 from PIL import Image
 import numpy as np
 from configprovider import ConfigProvider
-from robot import Robot
+from robot import *
 from webcam import Webcam
 from glyphs import Glyphs
 from browser import Browser
@@ -24,8 +24,8 @@ class SaltwashAR:
         self.config_provider = ConfigProvider()
 
         # initialise robots
-        self.rocky_robot = Robot()
-        self.sporty_robot = Robot()
+        self.rocky_robot = RockyRobot()
+        self.sporty_robot = SportyRobot()
 
         # initialise webcam
         self.webcam = Webcam()
@@ -43,7 +43,7 @@ class SaltwashAR:
         # initialise texture
         self.texture_background = None
 
-    def _init_gl(self, Width, Height):
+    def _init_gl(self):
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glClearDepth(1.0)
         glDepthFunc(GL_LESS)
@@ -53,11 +53,11 @@ class SaltwashAR:
         glLoadIdentity()
         gluPerspective(33.7, 1.3, 0.1, 100.0)
         glMatrixMode(GL_MODELVIEW)
-        
-        # load robots
-        self.rocky_robot.load('rocky_robot', self.config_provider.animation)
-        self.sporty_robot.load('sporty_robot', self.config_provider.animation)
-        
+
+        # load robots frames
+        self.rocky_robot.load_frames(self.config_provider.animation)
+        self.sporty_robot.load_frames(self.config_provider.animation)
+
         # start threads
         self.webcam.start()
         
@@ -158,10 +158,10 @@ class SaltwashAR:
 
             if glyph_name == ROCKY_ROBOT:
                 self.rocky_robot.is_detected = True
-                glCallList(self.rocky_robot.next_frame())
+                self.rocky_robot.next_frame()
             elif glyph_name == SPORTY_ROBOT:
                 self.sporty_robot.is_detected = True
-                glCallList(self.sporty_robot.next_frame())
+                self.sporty_robot.next_frame()
             
             glColor3f(1.0, 1.0, 1.0)
             glPopMatrix()
@@ -188,7 +188,7 @@ class SaltwashAR:
         self.window_id = glutCreateWindow("SaltwashAR")
         glutDisplayFunc(self._draw_scene)
         glutIdleFunc(self._draw_scene)
-        self._init_gl(640, 480)
+        self._init_gl()
         glutMainLoop()
  
 # run an instance of SaltwashAR
