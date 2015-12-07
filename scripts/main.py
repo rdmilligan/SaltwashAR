@@ -158,10 +158,19 @@ class SaltwashAR:
 
             if glyph_name == ROCKY_ROBOT:
                 self.rocky_robot.is_detected = True
-                self.rocky_robot.next_frame()
+                
+                if self.browser and self.browser.is_speaking:
+                    self.rocky_robot.next_frame(True)
+                else:
+                    self.rocky_robot.next_frame(False)
+            
             elif glyph_name == SPORTY_ROBOT:
                 self.sporty_robot.is_detected = True
-                self.sporty_robot.next_frame()
+                
+                if self.browser and self.browser.is_speaking:
+                    self.sporty_robot.next_frame(True)
+                else:
+                    self.sporty_robot.next_frame(False)
             
             glColor3f(1.0, 1.0, 1.0)
             glPopMatrix()

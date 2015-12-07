@@ -14,7 +14,8 @@ class Browser:
         self.text_to_speech = TextToSpeech()
         self.speech_to_text = SpeechToText()
         self.category = None
-         
+        self.is_speaking = False
+
     # create thread for processing content
     def start(self):
         Thread(target=self._process, args=()).start()
@@ -26,7 +27,7 @@ class Browser:
                 current_category = self.category
 
                 # browser asks question
-                self.text_to_speech.convert('What do you want to load, buddy?')
+                self._text_to_speech("What do you want to load, buddy?")
 
                 # user gives answer
                 answer = self.speech_to_text.convert()
@@ -37,7 +38,7 @@ class Browser:
                 if not url: continue
 
                 # browser tells user that content is being retrieved
-                self.text_to_speech.convert("Cool. I will get you stuff now...")
+                self._text_to_speech("Cool. I will get you stuff now...")
 
                 # get web content
                 request = requests.get(url)
@@ -53,9 +54,15 @@ class Browser:
                         if current_category != self.category: break
                                 
                         if len(line) >= self.MIN_LINE_LENGTH:
-                            self.text_to_speech.convert(line)
+                            self._text_to_speech(line)
                 except:
                     print "Browser: error converting text to speech"
+    
+    # text to speech
+    def _text_to_speech(self, text):
+        self.is_speaking = True
+        self.text_to_speech.convert(text)
+        self.is_speaking = False
 
     # load
     def load(self, category):
