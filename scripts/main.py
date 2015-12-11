@@ -73,8 +73,8 @@ class SaltwashAR:
         glLoadIdentity()
 
         # reset robots
-        self.rocky_robot.is_detected = False
-        self.sporty_robot.is_detected = False
+        self.rocky_robot.is_facing = False
+        self.sporty_robot.is_facing = False
 
         # get image from webcam
         image = self.webcam.get_current_frame()
@@ -138,7 +138,7 @@ class SaltwashAR:
 
         for glyph in glyphs:
             
-            rvecs, tvecs, _, glyph_name = glyph
+            rvecs, tvecs, glyph_rotation, glyph_name = glyph
 
             # build view matrix
             rmtx = cv2.Rodrigues(rvecs)[0]
@@ -153,25 +153,16 @@ class SaltwashAR:
             view_matrix = np.transpose(view_matrix)
 
             # load view matrix and draw cube
+            browser_is_speaking = self.browser and self.browser.is_speaking
+
             glPushMatrix()
             glLoadMatrixd(view_matrix)
 
             if glyph_name == ROCKY_ROBOT:
-                self.rocky_robot.is_detected = True
-                
-                if self.browser and self.browser.is_speaking:
-                    self.rocky_robot.next_frame(True)
-                else:
-                    self.rocky_robot.next_frame(False)
-            
+                self.rocky_robot.next_frame(glyph_rotation, browser_is_speaking)
             elif glyph_name == SPORTY_ROBOT:
-                self.sporty_robot.is_detected = True
-                
-                if self.browser and self.browser.is_speaking:
-                    self.sporty_robot.next_frame(True)
-                else:
-                    self.sporty_robot.next_frame(False)
-            
+                self.sporty_robot.next_frame(glyph_rotation, browser_is_speaking)
+
             glColor3f(1.0, 1.0, 1.0)
             glPopMatrix()
 
@@ -181,9 +172,9 @@ class SaltwashAR:
         if not self.browser: return
 
         # handle browser
-        if self.rocky_robot.is_detected:
+        if self.rocky_robot.is_facing:
             self.browser.load(ROCK)
-        elif self.sporty_robot.is_detected:
+        elif self.sporty_robot.is_facing:
             self.browser.load(SPORT)
         else:
             self.browser.halt()
