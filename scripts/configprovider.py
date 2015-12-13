@@ -14,4 +14,6 @@ class ConfigProvider:
     def browser(self):
         return self.config.getboolean("Features", "Browser")
 
-                 
+    @property 
+    def hand_gesture(self):
+        return self.config.getboolean("Features", "HandGesture")
