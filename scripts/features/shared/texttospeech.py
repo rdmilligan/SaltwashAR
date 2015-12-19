@@ -9,7 +9,8 @@ class TextToSpeech:
     def convert(self, text):
         print text
 
-        self.pyttsx.say(text)
-        self.pyttsx.runAndWait()
-
-      
+        try:
+            self.pyttsx.say(text)
+            self.pyttsx.runAndWait()
+        except RuntimeError:
+            print "Could not convert text to speech"

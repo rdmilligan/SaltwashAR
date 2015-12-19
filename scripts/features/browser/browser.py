@@ -1,7 +1,7 @@
 from threading import Thread
 import requests
 from bs4 import BeautifulSoup
-from texttospeech import TextToSpeech
+from ..shared import TextToSpeech
 from speechtotext import SpeechToText
 from searchdatabase import *
 from constants import *
@@ -62,7 +62,6 @@ class Browser:
         except:
             print "Browser: error converting text to speech"
     
-    # text to speech
     def _text_to_speech(self, text):
         self.is_speaking = True
         self.text_to_speech.convert(text)

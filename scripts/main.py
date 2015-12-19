@@ -8,8 +8,7 @@ from configprovider import ConfigProvider
 from robot import *
 from webcam import Webcam
 from glyphs import Glyphs
-from browser import Browser
-from handgesture import HandGesture
+from features import Features
 from constants import *
 
 class SaltwashAR:
@@ -35,17 +34,8 @@ class SaltwashAR:
         self.glyphs = Glyphs()
         self.glyphs_cache = None
 
-        # initialise browser
-        self.browser = None
-        
-        if self.config_provider.browser:
-            self.browser = Browser()
-
-        # initialise hand gesture
-        self.hand_gesture = None
-        
-        if self.config_provider.hand_gesture:
-            self.hand_gesture = HandGesture()
+        # initialise features
+        self.features = Features(self.config_provider)
 
         # initialise texture
         self.texture_background = None
@@ -89,11 +79,8 @@ class SaltwashAR:
         # handle glyphs
         self._handle_glyphs(image)
        
-        # handle browser
-        self._handle_browser()
-
-        # handle hand gesture
-        self._handle_hand_gesture(image)
+        # handle features
+        self.features.handle(self.rocky_robot.is_facing, self.sporty_robot.is_facing, image)
 
         glutSwapBuffers()
 
@@ -160,43 +147,16 @@ class SaltwashAR:
             view_matrix = np.transpose(view_matrix)
 
             # load view matrix and draw cube
-            is_speaking = (self.browser and self.browser.is_speaking) \
-                            or (self.hand_gesture and self.hand_gesture.is_speaking)
-
             glPushMatrix()
             glLoadMatrixd(view_matrix)
 
             if glyph_name == ROCKY_ROBOT:
-                self.rocky_robot.next_frame(glyph_rotation, is_speaking)
+                self.rocky_robot.next_frame(glyph_rotation, self.features.is_speaking())
             elif glyph_name == SPORTY_ROBOT:
-                self.sporty_robot.next_frame(glyph_rotation, is_speaking)
+                self.sporty_robot.next_frame(glyph_rotation, self.features.is_speaking())
 
             glColor3f(1.0, 1.0, 1.0)
             glPopMatrix()
-
-    def _handle_browser(self):
-
-        # check browser instantiated
-        if not self.browser: return
-
-        # handle browser
-        if self.rocky_robot.is_facing:
-            self.browser.start(ROCK)
-        elif self.sporty_robot.is_facing:
-            self.browser.start(SPORT)
-        else:
-            self.browser.stop()
-
-    def _handle_hand_gesture(self, image):
-
-        # check hand gesture instantiated
-        if not self.hand_gesture: return
-
-        # handle hand gesture
-        if self.rocky_robot.is_facing or self.sporty_robot.is_facing:
-            self.hand_gesture.start(image)
-        else:
-            self.hand_gesture.stop()
 
     def main(self):
         # setup and run OpenGL

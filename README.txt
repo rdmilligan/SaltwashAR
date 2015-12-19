@@ -7,7 +7,7 @@ To help develop the application, check out my 'Augmented Reality with hand gestu
 SaltwashAR uses:
 - OpenCV computer vision to detect a 2D marker in a webcam
 - OpenGL graphics library to render a robot upon the marker
-- Speech To Text and Text To Speech technologies to ask the robot to search the web and read out loud the results
+- Speech To Text and Text To Speech technologies to ask the robot to search the web and read out the results
 - OpenCV Haar Feature-based Cascade Classifiers to let the robot respond to hand gestures
 
 Documentation can be found on my Wiki: https://github.com/rdmilligan/SaltwashAR/wiki

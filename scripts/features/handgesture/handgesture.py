@@ -1,6 +1,6 @@
 from threading import Thread
 import cv2
-from texttospeech import TextToSpeech
+from ..shared import TextToSpeech
 
 class HandGesture:
   
@@ -22,6 +22,7 @@ class HandGesture:
         self.is_stop = True
 
     def _thread(self, image):
+        
         # detect hand gesture in image
         is_okay = self._is_item_detected_in_image('classifiers/haarcascade_okaygesture.xml', image.copy())
         is_vicky = self._is_item_detected_in_image('classifiers/haarcascade_vickygesture.xml', image.copy())

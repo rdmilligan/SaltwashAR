@@ -18,8 +18,8 @@ class SpeechToText:
             text = self.recognizer.recognize_google(audio)
             print text
         except sr.UnknownValueError:
-            print("Google Speech Recognition could not understand audio")
+            print "Google Speech Recognition could not understand audio"
         except sr.RequestError:
-            print("Could not request results from Google Speech Recognition service")
+            print "Could not request results from Google Speech Recognition service"
 
         return text

@@ -8,7 +8,7 @@ class ConfigProvider:
 
     @property
     def animation(self):
-        return self.config.getboolean("Features", "Animation")
+        return self.config.getboolean("Enhancements", "Animation")
 
     @property 
     def browser(self):
