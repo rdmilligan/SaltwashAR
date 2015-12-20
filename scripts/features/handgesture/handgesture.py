@@ -1,6 +1,8 @@
 from threading import Thread
 import cv2
+from constants import *
 from ..shared import TextToSpeech
+from time import sleep
 
 class HandGesture:
   
@@ -8,6 +10,7 @@ class HandGesture:
         self.thread = None
         self.is_stop = False
         self.is_speaking = False
+        self.emotion = None
         self.text_to_speech = TextToSpeech()
 
     def start(self, image):
@@ -33,8 +36,10 @@ class HandGesture:
         # respond to hand gesture
         if is_okay:
             self._text_to_speech("Hi there, buddy")
+            self._display_emotion(HAPPY)
         elif is_vicky:
             self._text_to_speech("Well, there is no need to be so rude!")
+            self._display_emotion(ANGRY)
 
     def _is_item_detected_in_image(self, classifier_path, image):
 
@@ -49,6 +54,10 @@ class HandGesture:
         self.text_to_speech.convert(text)
         self.is_speaking = False
  
+    def _display_emotion(self, emotion):
+        self.emotion = emotion
+        sleep(EMOTION_DISPLAYTIME)
+        self.emotion = None
 
 
 

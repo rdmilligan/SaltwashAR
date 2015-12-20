@@ -151,9 +151,9 @@ class SaltwashAR:
             glLoadMatrixd(view_matrix)
 
             if glyph_name == ROCKY_ROBOT:
-                self.rocky_robot.next_frame(glyph_rotation, self.features.is_speaking())
+                self.rocky_robot.next_frame(glyph_rotation, self.features.is_speaking(), self.features.get_emotion())
             elif glyph_name == SPORTY_ROBOT:
-                self.sporty_robot.next_frame(glyph_rotation, self.features.is_speaking())
+                self.sporty_robot.next_frame(glyph_rotation, self.features.is_speaking(), self.features.get_emotion())
 
             glColor3f(1.0, 1.0, 1.0)
             glPopMatrix()

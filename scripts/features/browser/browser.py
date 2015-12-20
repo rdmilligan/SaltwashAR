@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from ..shared import TextToSpeech
 from speechtotext import SpeechToText
 from searchdatabase import *
-from constants import *
 
 class Browser:
 

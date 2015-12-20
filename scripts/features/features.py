@@ -17,10 +17,14 @@ class Features:
         if config_provider.hand_gesture:
             self.hand_gesture = HandGesture()
 
+    # indicate whether a feature is speaking
     def is_speaking(self):
-        # indicate whether a feature is speaking
         return (self.browser and self.browser.is_speaking) \
                 or (self.hand_gesture and self.hand_gesture.is_speaking)
+
+    # provide an emotion from feature
+    def get_emotion(self):
+        if self.hand_gesture: return self.hand_gesture.emotion
 
     def handle(self, rocky_robot_is_facing, sporty_robot_is_facing, image):
         # handle browser
