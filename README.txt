@@ -1,6 +1,6 @@
 SaltwashAR is a Python Augmented Reality application.
 
-To see what it can do, check out my 'SaltwashAR' video: https://www.youtube.com/watch?v=tX_ZpJjWYGk
+To see what it can do, check out my 'SaltwashAR' video: https://www.youtube.com/watch?v=VYvRcqM8QJQ
 
 To help develop the application, check out my 'Augmented Reality with hand gestures' post: https://rdmilligan.wordpress.com/2015/12/13/augmented-reality-with-hand-gestures/
 
