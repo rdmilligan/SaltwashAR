@@ -1,1 +1,2 @@
 from texttospeech import TextToSpeech
+from speechtotext import SpeechToText

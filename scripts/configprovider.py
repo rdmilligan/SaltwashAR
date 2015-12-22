@@ -17,3 +17,7 @@ class ConfigProvider:
     @property 
     def hand_gesture(self):
         return self.config.getboolean("Features", "HandGesture")
+
+    @property 
+    def play_your_cards_right(self):
+        return self.config.getboolean("Features", "PlayYourCardsRight")

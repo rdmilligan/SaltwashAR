@@ -1,20 +1,18 @@
 from threading import Thread
 import requests
 from bs4 import BeautifulSoup
-from ..shared import TextToSpeech
-from speechtotext import SpeechToText
 from searchdatabase import *
 
 class Browser:
 
     MIN_LINE_LENGTH = 60
        
-    def __init__(self):
+    def __init__(self, text_to_speech, speech_to_text):
         self.thread = None
         self.is_stop = False
         self.is_speaking = False
-        self.text_to_speech = TextToSpeech()
-        self.speech_to_text = SpeechToText()
+        self.text_to_speech = text_to_speech
+        self.speech_to_text = speech_to_text
 
     def start(self, category):
         self.is_stop = False

@@ -1,17 +1,16 @@
 from threading import Thread
 import cv2
 from constants import *
-from ..shared import TextToSpeech
 from time import sleep
 
 class HandGesture:
   
-    def __init__(self):
+    def __init__(self, text_to_speech):
         self.thread = None
         self.is_stop = False
         self.is_speaking = False
         self.emotion = None
-        self.text_to_speech = TextToSpeech()
+        self.text_to_speech = text_to_speech
 
     def start(self, image):
         self.is_stop = False
