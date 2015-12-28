@@ -1,5 +1,5 @@
-from rocky_robot_frames import *
-from sporty_robot_frames import *
+from rockyrobotframes import *
+from sportyrobotframes import *
 from constants import *
 
 class Robot:

@@ -1,28 +1,33 @@
 from constants import *
-from shared import TextToSpeech
-from shared import SpeechToText
-from browser import Browser
-from handgesture import HandGesture
-from playyourcardsright import PlayYourCardsRight
 
 class Features:
 
     # initialise features
     def __init__(self, config_provider):
-        
-        text_to_speech = TextToSpeech()
-        speech_to_text = SpeechToText()
+
+        text_to_speech = None
+        if config_provider.browser or config_provider.hand_gesture or config_provider.play_your_cards_right:
+            from shared import TextToSpeech
+            text_to_speech = TextToSpeech()
+
+        speech_to_text = None
+        if config_provider.browser or config_provider.play_your_cards_right:
+            from shared import SpeechToText
+            speech_to_text = SpeechToText()
 
         self.browser = None
         if config_provider.browser:
+            from browser import Browser
             self.browser = Browser(text_to_speech, speech_to_text)
 
         self.hand_gesture = None
         if config_provider.hand_gesture:
+            from handgesture import HandGesture
             self.hand_gesture = HandGesture(text_to_speech)
 
         self.play_your_cards_right = None
         if config_provider.play_your_cards_right:
+            from playyourcardsright import PlayYourCardsRight
             self.play_your_cards_right = PlayYourCardsRight(text_to_speech, speech_to_text)
 
     # indicate whether a feature is speaking

@@ -91,7 +91,7 @@ class SaltwashAR:
         bg_image = Image.fromarray(bg_image)     
         ix = bg_image.size[0]
         iy = bg_image.size[1]
-        bg_image = bg_image.tostring("raw", "BGRX", 0, -1)
+        bg_image = bg_image.tobytes("raw", "BGRX", 0, -1)
  
         # create background texture
         glBindTexture(GL_TEXTURE_2D, self.texture_background)

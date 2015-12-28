@@ -43,7 +43,7 @@ class Browser:
 
         # get web content
         request = requests.get(url)
-        soup = BeautifulSoup(request.text) 
+        soup = BeautifulSoup(request.text, "lxml") 
 
         # get text from web content
         [s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]

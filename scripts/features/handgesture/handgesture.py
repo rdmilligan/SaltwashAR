@@ -26,8 +26,8 @@ class HandGesture:
     def _thread(self, image):
         
         # detect hand gesture in image
-        is_okay = self._is_item_detected_in_image('classifiers/haarcascade_okaygesture.xml', image.copy())
-        is_vicky = self._is_item_detected_in_image('classifiers/haarcascade_vickygesture.xml', image.copy())
+        is_okay = self._is_item_detected_in_image('scripts/features/handgesture/haarcascade_okaygesture.xml', image.copy())
+        is_vicky = self._is_item_detected_in_image('scripts/features/handgesture/haarcascade_vickygesture.xml', image.copy())
 
         # check whether to stop thread
         if self.is_stop: return
