@@ -1,13 +1,13 @@
 import cv2
-from glyphfunctions import *
-from glyphdatabase import *
+from markerfunctions import *
+from markerdatabase import *
 
-class Glyphs:
+class Markers:
     
     QUADRILATERAL_POINTS = 4
     BLACK_THRESHOLD = 100
     WHITE_THRESHOLD = 155
-    GLYPH_NAME_INDEX = 3
+    MARKER_NAME_INDEX = 3
 
     def __init__(self):
         with np.load('calibration/webcam_calibration_ouput.npz') as X:
@@ -15,7 +15,7 @@ class Glyphs:
 
     def detect(self, image):
 
-        glyphs = []
+        markers = []
 
         # Stage 1: Detect edges in image
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -41,27 +41,27 @@ class Glyphs:
                 if topdown_quad[(topdown_quad.shape[0]/100.0)*5, 
                                 (topdown_quad.shape[1]/100.0)*5] > self.BLACK_THRESHOLD: continue
 
-                # Stage 6: Get glyph pattern
-                glyph_pattern = None
+                # Stage 6: Get marker pattern
+                marker_pattern = None
                 
                 try:
-                    glyph_pattern = get_glyph_pattern(topdown_quad, self.BLACK_THRESHOLD, self.WHITE_THRESHOLD)
+                    marker_pattern = get_marker_pattern(topdown_quad, self.BLACK_THRESHOLD, self.WHITE_THRESHOLD)
                 except Exception as ex:
                     print(ex)
                 
-                if not glyph_pattern: continue
+                if not marker_pattern: continue
 
-                 # Stage 7: Match glyph pattern
-                glyph_found, glyph_rotation, glyph_name = match_glyph_pattern(glyph_pattern)
+                 # Stage 7: Match marker pattern
+                marker_found, marker_rotation, marker_name = match_marker_pattern(marker_pattern)
 
-                if glyph_found:
+                if marker_found:
 
-                    # Stage 8: Duplicate glyph check
-                    if glyph_name in [glyph[self.GLYPH_NAME_INDEX] for glyph in glyphs]: continue
+                    # Stage 8: Duplicate marker check
+                    if marker_name in [marker[self.MARKER_NAME_INDEX] for marker in markers]: continue
 
                     # Stage 9: Get rotation and translation vectors
                     rvecs, tvecs = get_vectors(image, approx.reshape(4, 2), self.mtx, self.dist)
-                    glyphs.append([rvecs, tvecs, glyph_rotation, glyph_name])
+                    markers.append([rvecs, tvecs, marker_rotation, marker_name])
 
-        return glyphs
+        return markers
 

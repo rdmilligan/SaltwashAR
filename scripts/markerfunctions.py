@@ -27,7 +27,7 @@ def max_width_height(points):
     right_height = np.sqrt(((tr[0] - br[0]) ** 2) + ((tr[1] - br[1]) ** 2))
     max_height = max(int(left_height), int(right_height))
 
-    return (max_width,max_height)
+    return (max_width, max_height)
 
 def topdown_points(max_width, max_height):
     return np.array([
@@ -50,7 +50,7 @@ def get_topdown_quad(image, src):
 
     return warped
 
-def get_glyph_pattern(image, black_threshold, white_threshold):
+def get_marker_pattern(image, black_threshold, white_threshold):
 
     # collect pixel from each cell (left to right, top to bottom)
     cells = []

@@ -7,7 +7,7 @@ import numpy as np
 from configprovider import ConfigProvider
 from robot import *
 from webcam import Webcam
-from glyphs import Glyphs
+from markers import Markers
 from features import Features
 from constants import *
 
@@ -30,9 +30,9 @@ class SaltwashAR:
         # initialise webcam
         self.webcam = Webcam()
 
-        # initialise glyphs
-        self.glyphs = Glyphs()
-        self.glyphs_cache = None
+        # initialise markers
+        self.markers = Markers()
+        self.markers_cache = None
 
         # initialise features
         self.features = Features(self.config_provider)
@@ -76,8 +76,8 @@ class SaltwashAR:
         # handle background
         self._handle_background(image)
 
-        # handle glyphs
-        self._handle_glyphs(image)
+        # handle markers
+        self._handle_markers(image)
        
         # handle features
         self.features.handle(self.rocky_robot.is_facing, self.sporty_robot.is_facing, image)
@@ -111,28 +111,28 @@ class SaltwashAR:
         glEnd( )
         glPopMatrix()
 
-    def _handle_glyphs(self, image):
+    def _handle_markers(self, image):
 
-        # attempt to detect glyphs
-        glyphs = []
+        # attempt to detect markers
+        markers = []
 
         try:
-            glyphs = self.glyphs.detect(image)
+            markers = self.markers.detect(image)
         except Exception as ex:
             print(ex)
 
-        # manage glyphs cache
-        if glyphs:
-            self.glyphs_cache = glyphs
-        elif self.glyphs_cache: 
-            glyphs = self.glyphs_cache
-            self.glyphs_cache = None
+        # manage markers cache
+        if markers:
+            self.markers_cache = markers
+        elif self.markers_cache: 
+            markers = self.markers_cache
+            self.markers_cache = None
         else:
             return
 
-        for glyph in glyphs:
+        for marker in markers:
             
-            rvecs, tvecs, glyph_rotation, glyph_name = glyph
+            rvecs, tvecs, marker_rotation, marker_name = marker
 
             # build view matrix
             rmtx = cv2.Rodrigues(rvecs)[0]
@@ -150,10 +150,10 @@ class SaltwashAR:
             glPushMatrix()
             glLoadMatrixd(view_matrix)
 
-            if glyph_name == ROCKY_ROBOT:
-                self.rocky_robot.next_frame(glyph_rotation, self.features.is_speaking(), self.features.get_emotion())
-            elif glyph_name == SPORTY_ROBOT:
-                self.sporty_robot.next_frame(glyph_rotation, self.features.is_speaking(), self.features.get_emotion())
+            if marker_name == ROCKY_ROBOT:
+                self.rocky_robot.next_frame(marker_rotation, self.features.is_speaking(), self.features.get_emotion())
+            elif marker_name == SPORTY_ROBOT:
+                self.sporty_robot.next_frame(marker_rotation, self.features.is_speaking(), self.features.get_emotion())
 
             glColor3f(1.0, 1.0, 1.0)
             glPopMatrix()

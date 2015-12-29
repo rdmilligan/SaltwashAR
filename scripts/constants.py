@@ -1,4 +1,4 @@
-# glyph contants
+# marker constants
 ROCKY_ROBOT = 'rocky_robot'
 SPORTY_ROBOT = 'sporty_robot'
 
