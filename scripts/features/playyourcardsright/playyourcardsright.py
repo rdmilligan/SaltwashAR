@@ -1,4 +1,4 @@
-from threading import Thread
+from features.base import Feature
 from gametable import GameTable
 from pybrain.rl.learners import Q
 from pybrain.rl.explorers import EpsilonGreedyExplorer
@@ -8,11 +8,10 @@ from gameenvironment import GameEnvironment
 from gametask import GameTask
 from pybrain.rl.experiments import Experiment
 
-class PlayYourCardsRight:
+class PlayYourCardsRight(Feature):
   
     def __init__(self, text_to_speech, speech_to_text):
-        self.thread = None
-        self.is_stop = False
+        Feature.__init__(self)
 
         # setup AV Table
         self.av_table = GameTable(13, 2)
@@ -40,18 +39,7 @@ class PlayYourCardsRight:
     def is_speaking(self):
         return self.game_interaction.is_speaking
 
-    def start(self):
-        self.is_stop = False
-        
-        if self.thread and self.thread.is_alive(): return
-
-        self.thread = Thread(target=self._thread)
-        self.thread.start()
-
-    def stop(self):
-        self.is_stop = True
-
-    def _thread(self):
+    def _thread(self, args):
         # let's play our cards right!
         while not self.is_stop:
             self.experiment.doInteractions(1)

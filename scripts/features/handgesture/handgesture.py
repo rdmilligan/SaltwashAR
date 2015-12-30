@@ -1,30 +1,17 @@
-from threading import Thread
+from features.base import *
 import cv2
 from constants import *
-from time import sleep
 
-class HandGesture:
+class HandGesture(Feature, Speaking, Emotion):
   
     def __init__(self, text_to_speech):
-        self.thread = None
-        self.is_stop = False
-        self.is_speaking = False
-        self.emotion = None
-        self.text_to_speech = text_to_speech
+        Feature.__init__(self)
+        Speaking.__init__(self, text_to_speech)
+        Emotion.__init__(self)
 
-    def start(self, image):
-        self.is_stop = False
-        
-        if self.thread and self.thread.is_alive(): return
+    def _thread(self, args):
+        image = args
 
-        self.thread = Thread(target=self._thread, args=(image,))
-        self.thread.start()
-
-    def stop(self):
-        self.is_stop = True
-
-    def _thread(self, image):
-        
         # detect hand gesture in image
         is_okay = self._is_item_detected_in_image('scripts/features/handgesture/haarcascade_okaygesture.xml', image.copy())
         is_vicky = self._is_item_detected_in_image('scripts/features/handgesture/haarcascade_vickygesture.xml', image.copy())
@@ -47,17 +34,3 @@ class HandGesture:
         items = classifier.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=4, minSize=(200, 260))
 
         return len(items) > 0
-
-    def _text_to_speech(self, text):
-        self.is_speaking = True
-        self.text_to_speech.convert(text)
-        self.is_speaking = False
- 
-    def _display_emotion(self, emotion):
-        self.emotion = emotion
-        sleep(EMOTION_DISPLAYTIME)
-        self.emotion = None
-
-
-
-

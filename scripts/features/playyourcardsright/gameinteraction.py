@@ -1,8 +1,9 @@
-class GameInteraction(object):
+from features.base import Speaking
+
+class GameInteraction(Speaking):
  
     def __init__(self, text_to_speech, speech_to_text):
-        self.is_speaking = False
-        self.text_to_speech = text_to_speech
+        Speaking.__init__(self, text_to_speech)
         self.speech_to_text = speech_to_text
  
     # 13 states
@@ -69,11 +70,6 @@ class GameInteraction(object):
             response = self._speech_to_text()
  
         return self.RESULT[response]
-    
-    def _text_to_speech(self, text):
-        self.is_speaking = True
-        self.text_to_speech.convert(text)
-        self.is_speaking = False
 
     def _speech_to_text(self):
         text = self.speech_to_text.convert()

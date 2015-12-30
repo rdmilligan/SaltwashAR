@@ -4,6 +4,7 @@ SPORTY_ROBOT = 'sporty_robot'
 
 # emotion constants
 HAPPY = 'happy'
+SAD = 'sad'
 ANGRY = 'angry'
 EMOTION_DISPLAYTIME = 2
 

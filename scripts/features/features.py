@@ -6,7 +6,8 @@ class Features:
     def __init__(self, config_provider):
 
         text_to_speech = None
-        if config_provider.browser or config_provider.hand_gesture or config_provider.play_your_cards_right:
+        if (config_provider.browser or config_provider.hand_gesture or
+            config_provider.play_your_cards_right or config_provider.happy_colour):
             from shared import TextToSpeech
             text_to_speech = TextToSpeech()
 
@@ -30,16 +31,24 @@ class Features:
             from playyourcardsright import PlayYourCardsRight
             self.play_your_cards_right = PlayYourCardsRight(text_to_speech, speech_to_text)
 
+        self.happy_colour = None
+        if config_provider.happy_colour:
+            from happycolour import HappyColour
+            self.happy_colour = HappyColour(text_to_speech)
+
     # indicate whether a feature is speaking
     def is_speaking(self):
-        return (self.browser and self.browser.is_speaking) \
-                or (self.hand_gesture and self.hand_gesture.is_speaking) \
+        return ((self.browser and self.browser.is_speaking)
+                or (self.hand_gesture and self.hand_gesture.is_speaking)
                 or (self.play_your_cards_right and self.play_your_cards_right.is_speaking)
+                or (self.happy_colour and self.happy_colour.is_speaking))
 
     # provide emotion from a feature
     def get_emotion(self):
         if self.hand_gesture: 
             return self.hand_gesture.emotion
+        elif self.happy_colour: 
+            return self.happy_colour.emotion
 
         return None
 
@@ -48,6 +57,7 @@ class Features:
         self._handle_browser(rocky_robot_is_facing, sporty_robot_is_facing)
         self._handle_hand_gesture(rocky_robot_is_facing, sporty_robot_is_facing, image)
         self._handle_play_your_cards_right(sporty_robot_is_facing)
+        self._handle_happy_colour(rocky_robot_is_facing, image)
 
     # handle browser
     def _handle_browser(self, rocky_robot_is_facing, sporty_robot_is_facing):
@@ -78,3 +88,11 @@ class Features:
         else:
             self.play_your_cards_right.stop()
 
+    # handle happy colour
+    def _handle_happy_colour(self, rocky_robot_is_facing, image):
+        if not self.happy_colour: return
+
+        if rocky_robot_is_facing:
+            self.happy_colour.start(image)
+        else:
+            self.happy_colour.stop()

@@ -9,6 +9,7 @@ class Robot:
         self.head_passive_frames = None
         self.head_speaking_frames = None
         self.head_happy_frames = None
+        self.head_sad_frames = None
         self.head_angry_frames = None
         self.degrees_90_frame = None
         self.degrees_180_frame = None
@@ -42,6 +43,9 @@ class Robot:
         elif emotion == HAPPY:
             self._render_head(self.head_happy_frames)
 
+        elif emotion == SAD:
+            self._render_head(self.head_sad_frames)
+
         elif emotion == ANGRY:
             self._render_head(self.head_angry_frames)
 
@@ -65,6 +69,7 @@ class RockyRobot(Robot):
         self.head_passive_frames = rocky_robot_head_passive_frames(is_animated)
         self.head_speaking_frames = rocky_robot_head_speaking_frames(is_animated)
         self.head_happy_frames = rocky_robot_head_happy_frames(is_animated)
+        self.head_sad_frames = rocky_robot_head_sad_frames(is_animated)
         self.head_angry_frames = rocky_robot_head_angry_frames(is_animated)
         self.degrees_90_frame = rocky_robot_degrees_90_frame()
         self.degrees_180_frame = rocky_robot_degrees_180_frame()
@@ -78,6 +83,7 @@ class SportyRobot(Robot):
         self.head_passive_frames = sporty_robot_head_passive_frames(is_animated)
         self.head_speaking_frames = sporty_robot_head_speaking_frames(is_animated)
         self.head_happy_frames = sporty_robot_head_happy_frames(is_animated)
+        self.head_sad_frames = sporty_robot_head_sad_frames(is_animated)
         self.head_angry_frames = sporty_robot_head_angry_frames(is_animated)
         self.degrees_90_frame = sporty_robot_degrees_90_frame()
         self.degrees_180_frame = sporty_robot_degrees_180_frame()

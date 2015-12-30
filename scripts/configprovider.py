@@ -21,3 +21,7 @@ class ConfigProvider:
     @property 
     def play_your_cards_right(self):
         return self.config.getboolean("Features", "PlayYourCardsRight")
+
+    @property 
+    def happy_colour(self):
+        return self.config.getboolean("Features", "HappyColour")

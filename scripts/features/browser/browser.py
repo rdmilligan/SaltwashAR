@@ -1,31 +1,19 @@
-from threading import Thread
+from features.base import Feature, Speaking
+from searchdatabase import *
 import requests
 from bs4 import BeautifulSoup
-from searchdatabase import *
 
-class Browser:
+class Browser(Feature, Speaking):
 
     MIN_LINE_LENGTH = 60
        
     def __init__(self, text_to_speech, speech_to_text):
-        self.thread = None
-        self.is_stop = False
-        self.is_speaking = False
-        self.text_to_speech = text_to_speech
+        Feature.__init__(self)
+        Speaking.__init__(self, text_to_speech)
         self.speech_to_text = speech_to_text
 
-    def start(self, category):
-        self.is_stop = False
-
-        if self.thread and self.thread.is_alive(): return
-
-        self.thread = Thread(target=self._thread, args=(category,))
-        self.thread.start()
-
-    def stop(self):
-        self.is_stop = True
-
-    def _thread(self, category):
+    def _thread(self, args):
+        category = args
 
         # browser asks question
         self._text_to_speech("What do you want to load, buddy?")
@@ -58,11 +46,3 @@ class Browser:
                     self._text_to_speech(line)
         except:
             print "Browser: error converting text to speech"
-    
-    def _text_to_speech(self, text):
-        self.is_speaking = True
-        self.text_to_speech.convert(text)
-        self.is_speaking = False
-
-
-
