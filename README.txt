@@ -10,6 +10,6 @@ SaltwashAR uses:
 - Speech To Text and Text To Speech technologies to ask the robot to search the web and read out the results
 - OpenCV Haar Feature-based Cascade Classifiers to let the robot respond to hand gestures
 - PyBrain Reinforcement Learning to let the robot master a card game
-- OpenCV colour detection to help robot be happy
+- OpenCV colour detection to help the robot be happy
 
 Documentation can be found on my Wiki: https://github.com/rdmilligan/SaltwashAR/wiki
