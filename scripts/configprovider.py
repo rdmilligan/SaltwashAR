@@ -25,3 +25,7 @@ class ConfigProvider:
     @property 
     def happy_colour(self):
         return self.config.getboolean("Features", "HappyColour")
+
+    @property 
+    def optical_character_recognition(self):
+        return self.config.getboolean("Features", "OpticalCharacterRecognition")

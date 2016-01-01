@@ -11,5 +11,6 @@ SaltwashAR uses:
 - OpenCV Haar Feature-based Cascade Classifiers to let the robot respond to hand gestures
 - PyBrain Reinforcement Learning to let the robot master a card game
 - OpenCV colour detection to help the robot be happy
+- PyTesser Optical Character Recognition to let the robot read out printed words
 
 Documentation can be found on my Wiki: https://github.com/rdmilligan/SaltwashAR/wiki

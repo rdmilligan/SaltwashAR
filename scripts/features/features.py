@@ -7,7 +7,8 @@ class Features:
 
         text_to_speech = None
         if (config_provider.browser or config_provider.hand_gesture or
-            config_provider.play_your_cards_right or config_provider.happy_colour):
+            config_provider.play_your_cards_right or config_provider.happy_colour or
+            config_provider.optical_character_recognition):
             from shared import TextToSpeech
             text_to_speech = TextToSpeech()
 
@@ -36,12 +37,18 @@ class Features:
             from happycolour import HappyColour
             self.happy_colour = HappyColour(text_to_speech)
 
+        self.optical_character_recognition = None
+        if config_provider.optical_character_recognition:
+            from opticalcharacterrecognition import OpticalCharacterRecognition
+            self.optical_character_recognition = OpticalCharacterRecognition(text_to_speech)
+
     # indicate whether a feature is speaking
     def is_speaking(self):
-        return ((self.browser and self.browser.is_speaking)
-                or (self.hand_gesture and self.hand_gesture.is_speaking)
-                or (self.play_your_cards_right and self.play_your_cards_right.is_speaking)
-                or (self.happy_colour and self.happy_colour.is_speaking))
+        return ((self.browser and self.browser.is_speaking) or
+                (self.hand_gesture and self.hand_gesture.is_speaking) or
+                (self.play_your_cards_right and self.play_your_cards_right.is_speaking) or
+                (self.happy_colour and self.happy_colour.is_speaking) or
+                (self.optical_character_recognition and self.optical_character_recognition.is_speaking))
 
     # provide emotion from a feature
     def get_emotion(self):
@@ -49,8 +56,8 @@ class Features:
             return self.hand_gesture.emotion
         elif self.happy_colour: 
             return self.happy_colour.emotion
-
-        return None
+        else:
+            return None
 
     # handle features
     def handle(self, rocky_robot_is_facing, sporty_robot_is_facing, image):
@@ -58,6 +65,7 @@ class Features:
         self._handle_hand_gesture(rocky_robot_is_facing, sporty_robot_is_facing, image)
         self._handle_play_your_cards_right(sporty_robot_is_facing)
         self._handle_happy_colour(rocky_robot_is_facing, image)
+        self._handle_optical_character_recognition(rocky_robot_is_facing, sporty_robot_is_facing, image)
 
     # handle browser
     def _handle_browser(self, rocky_robot_is_facing, sporty_robot_is_facing):
@@ -96,3 +104,12 @@ class Features:
             self.happy_colour.start(image)
         else:
             self.happy_colour.stop()
+
+    # handle optical character recognition
+    def _handle_optical_character_recognition(self, rocky_robot_is_facing, sporty_robot_is_facing, image):
+        if not self.optical_character_recognition: return
+
+        if rocky_robot_is_facing or sporty_robot_is_facing:
+            self.optical_character_recognition.start(image)
+        else:
+            self.optical_character_recognition.stop()

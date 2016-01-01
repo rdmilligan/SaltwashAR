@@ -1,0 +1,1 @@
+from opticalcharacterrecognition import OpticalCharacterRecognition
