@@ -29,3 +29,7 @@ class ConfigProvider:
     @property 
     def optical_character_recognition(self):
         return self.config.getboolean("Features", "OpticalCharacterRecognition")
+
+    @property 
+    def television(self):
+        return self.config.getboolean("Features", "Television")

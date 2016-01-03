@@ -12,5 +12,6 @@ SaltwashAR uses:
 - PyBrain Reinforcement Learning to let the robot master a card game
 - OpenCV colour detection to help the robot be happy
 - PyTesser Optical Character Recognition to let the robot read out printed words
+- OpenCV object detection to let the robot watch television
 
 Documentation can be found on my Wiki: https://github.com/rdmilligan/SaltwashAR/wiki

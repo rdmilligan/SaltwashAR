@@ -15,10 +15,17 @@ class Robot:
         self.degrees_180_frame = None
         self.degrees_270_frame = None
         self.head_frame_index = 0
+        self.is_rendered = False
+        self.is_facing = False
+
+    # reset robot
+    def reset(self):
+        self.is_rendered = False
         self.is_facing = False
 
     # get next frame
     def next_frame(self, rotation, is_speaking, emotion):
+        self.is_rendered = True
         
         # handle any rotation
         if rotation != 0:

@@ -1,21 +1,44 @@
+from features.base import Feature
+import numpy as np
 import cv2
-from markerfunctions import *
-from markerdatabase import *
+from televisionfunctions import *
 
-class Markers:
-    
+class Television(Feature):
+
     QUADRILATERAL_POINTS = 4
     BLACK_THRESHOLD = 100
     WHITE_THRESHOLD = 155
-    MARKER_NAME_INDEX = 3
+    TELEVISION_PATTERN = [1, 0, 1, 0, 1, 0, 1, 0, 1]
 
     def __init__(self):
-        with np.load('calibration/webcam_calibration_ouput.npz') as X:
-            self.mtx, self.dist, _, _ = [X[i] for i in ('mtx','dist','rvecs','tvecs')]
+        Feature.__init__(self)
+        self.background_image = np.array([])
+        self.video_capture = cv2.VideoCapture()
 
-    def detect(self, image):
+    # stop thread
+    def stop(self):
+        Feature.stop(self)
+        
+        self.background_image = np.array([])
 
-        markers = []
+        if self.video_capture.isOpened():
+            self.video_capture.release()
+
+    # get latest frame from video
+    def _get_video_frame(self):
+
+        success, frame = self.video_capture.read()
+        if success: return frame
+
+        if not self.video_capture.isOpened():
+            self.video_capture.open('scripts/features/television/channel_one.mp4')
+        else:
+            self.video_capture.set(cv2.cv.CV_CAP_PROP_POS_FRAMES, 0)      
+
+        return self.video_capture.read()[1]
+
+    def _thread(self, args):
+        image = args
 
         # Stage 1: Detect edges in image
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -52,16 +75,12 @@ class Markers:
                 if not marker_pattern: continue
 
                 # Stage 7: Match marker pattern
-                marker_found, marker_rotation, marker_name = match_marker_pattern(marker_pattern)
+                if marker_pattern != self.TELEVISION_PATTERN: continue
 
-                if marker_found:
+                # Stage 8: Substitute marker
+                if self.is_stop: return
 
-                    # Stage 8: Duplicate marker check
-                    if marker_name in [marker[self.MARKER_NAME_INDEX] for marker in markers]: continue
-
-                    # Stage 9: Get rotation and translation vectors
-                    rvecs, tvecs = get_vectors(image, approx.reshape(4, 2), self.mtx, self.dist)
-                    markers.append([rvecs, tvecs, marker_rotation, marker_name])
-
-        return markers
-
+                self.background_image = add_substitute_quad(image, self._get_video_frame(), approx.reshape(4, 2))
+                return
+    
+        self.background_image = np.array([])

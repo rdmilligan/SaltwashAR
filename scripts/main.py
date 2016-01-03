@@ -67,8 +67,8 @@ class SaltwashAR:
         glLoadIdentity()
 
         # reset robots
-        self.rocky_robot.is_facing = False
-        self.sporty_robot.is_facing = False
+        self.rocky_robot.reset()
+        self.sporty_robot.reset()
 
         # get image from webcam
         image = self.webcam.get_current_frame()
@@ -80,12 +80,15 @@ class SaltwashAR:
         self._handle_markers(image)
        
         # handle features
-        self.features.handle(self.rocky_robot.is_facing, self.sporty_robot.is_facing, image)
+        self.features.handle(self.rocky_robot, self.sporty_robot, image)
 
         glutSwapBuffers()
 
     def _handle_background(self, image):
         
+        # let features update background image
+        image = self.features.update_background_image(image)
+
         # convert image to OpenGL texture format
         bg_image = cv2.flip(image, 0)
         bg_image = Image.fromarray(bg_image)     
