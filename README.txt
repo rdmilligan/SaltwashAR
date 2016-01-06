@@ -1,6 +1,8 @@
 SaltwashAR is a Python Augmented Reality application.
 
-To see what it can do, check out my 'SaltwashAR' video: https://www.youtube.com/watch?v=hfP_C4ZTtuo
+Documentation can be found on my Wiki: https://github.com/rdmilligan/SaltwashAR/wiki
+
+To see what it can do, check out my 'SaltwashAR' video: https://youtu.be/saDeD26KRYo
 
 To help develop the application, check out my 'Augmented Reality with hand gestures' post: https://rdmilligan.wordpress.com/2015/12/13/augmented-reality-with-hand-gestures/
 
@@ -13,5 +15,3 @@ SaltwashAR uses:
 - OpenCV colour detection to help the robot be happy
 - PyTesser Optical Character Recognition to let the robot read out printed words
 - OpenCV object detection to let the robot watch television
-
-Documentation can be found on my Wiki: https://github.com/rdmilligan/SaltwashAR/wiki
