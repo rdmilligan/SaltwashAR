@@ -33,3 +33,7 @@ class ConfigProvider:
     @property 
     def television(self):
         return self.config.getboolean("Features", "Television")
+
+    @property 
+    def phrase_translation(self):
+        return self.config.getboolean("Features", "PhraseTranslation")

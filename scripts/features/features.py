@@ -13,7 +13,8 @@ class Features:
             text_to_speech = TextToSpeech()
 
         speech_to_text = None
-        if config_provider.browser or config_provider.play_your_cards_right:
+        if (config_provider.browser or config_provider.play_your_cards_right or
+            config_provider.phrase_translation):
             from shared import SpeechToText
             speech_to_text = SpeechToText()
 
@@ -47,13 +48,19 @@ class Features:
             from television import Television
             self.television = Television()
 
+        self.phrase_translation = None
+        if config_provider.phrase_translation:
+            from phrasetranslation import PhraseTranslation
+            self.phrase_translation = PhraseTranslation(speech_to_text)
+
     # indicate whether a feature is speaking
     def is_speaking(self):
         return ((self.browser and self.browser.is_speaking) or
                 (self.hand_gesture and self.hand_gesture.is_speaking) or
                 (self.play_your_cards_right and self.play_your_cards_right.is_speaking) or
                 (self.happy_colour and self.happy_colour.is_speaking) or
-                (self.optical_character_recognition and self.optical_character_recognition.is_speaking))
+                (self.optical_character_recognition and self.optical_character_recognition.is_speaking) or
+                (self.phrase_translation and self.phrase_translation.is_speaking))
 
     # provide emotion from a feature
     def get_emotion(self):
@@ -79,6 +86,7 @@ class Features:
         self._handle_happy_colour(rocky_robot, image)
         self._handle_optical_character_recognition(rocky_robot, sporty_robot, image)
         self._handle_television(rocky_robot, sporty_robot, image)
+        self._handle_phrase_translation(sporty_robot)
 
     # handle browser
     def _handle_browser(self, rocky_robot, sporty_robot):
@@ -135,3 +143,12 @@ class Features:
             self.television.start(image)
         else:
             self.television.stop()
+
+    # handle phrase translation
+    def _handle_phrase_translation(self, sporty_robot):
+        if not self.phrase_translation: return
+
+        if sporty_robot.is_facing:
+            self.phrase_translation.start()
+        else:
+            self.phrase_translation.stop()
