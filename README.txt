@@ -4,7 +4,7 @@ Documentation can be found on my Wiki: https://github.com/rdmilligan/SaltwashAR/
 
 To see what it can do, check out my 'SaltwashAR' video: https://youtu.be/saDeD26KRYo
 
-To help develop the application, check out my 'Augmented Reality with hand gestures' post: https://rdmilligan.wordpress.com/2015/12/13/augmented-reality-with-hand-gestures/
+To help develop the application, check out my 'Adding a feature to SaltwashAR' post: https://rdmilligan.wordpress.com/2016/01/09/adding-a-feature-to-saltwashar/
 
 SaltwashAR uses:
 - OpenCV computer vision to detect a 2D marker in a webcam
