@@ -38,7 +38,7 @@ class Calculator(Feature, Speaking):
             if expression_middle in self.MULTIPLY:
                 answer = int(expression_left) * int(expression_right)
             if expression_middle in self.DIVIDE:
-                answer = int(expression_left) / int(expression_right)
+                answer = int(expression_left) / float(expression_right)
         except:
             print "Unable to calculate an answer"
 
