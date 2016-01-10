@@ -8,13 +8,13 @@ class Features:
         text_to_speech = None
         if (config_provider.browser or config_provider.hand_gesture or
             config_provider.play_your_cards_right or config_provider.happy_colour or
-            config_provider.optical_character_recognition):
+            config_provider.optical_character_recognition or config_provider.calculator):
             from shared import TextToSpeech
             text_to_speech = TextToSpeech()
 
         speech_to_text = None
         if (config_provider.browser or config_provider.play_your_cards_right or
-            config_provider.phrase_translation):
+            config_provider.phrase_translation or config_provider.calculator):
             from shared import SpeechToText
             speech_to_text = SpeechToText()
 
@@ -53,6 +53,11 @@ class Features:
             from phrasetranslation import PhraseTranslation
             self.phrase_translation = PhraseTranslation(speech_to_text)
 
+        self.calculator = None
+        if config_provider.calculator:
+            from calculator import Calculator
+            self.calculator = Calculator(text_to_speech, speech_to_text)
+
     # indicate whether a feature is speaking
     def is_speaking(self):
         return ((self.browser and self.browser.is_speaking) or
@@ -60,7 +65,8 @@ class Features:
                 (self.play_your_cards_right and self.play_your_cards_right.is_speaking) or
                 (self.happy_colour and self.happy_colour.is_speaking) or
                 (self.optical_character_recognition and self.optical_character_recognition.is_speaking) or
-                (self.phrase_translation and self.phrase_translation.is_speaking))
+                (self.phrase_translation and self.phrase_translation.is_speaking) or
+                (self.calculator and self.calculator.is_speaking))
 
     # provide emotion from a feature
     def get_emotion(self):
@@ -87,6 +93,7 @@ class Features:
         self._handle_optical_character_recognition(rocky_robot, sporty_robot, image)
         self._handle_television(rocky_robot, sporty_robot, image)
         self._handle_phrase_translation(sporty_robot)
+        self._handle_calculator(rocky_robot, sporty_robot)
 
     # handle browser
     def _handle_browser(self, rocky_robot, sporty_robot):
@@ -152,3 +159,12 @@ class Features:
             self.phrase_translation.start()
         else:
             self.phrase_translation.stop()
+
+    # handle calculator
+    def _handle_calculator(self, rocky_robot, sporty_robot):
+        if not self.calculator: return
+ 
+        if rocky_robot.is_facing or sporty_robot.is_facing:
+            self.calculator.start()
+        else:
+            self.calculator.stop()

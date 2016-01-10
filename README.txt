@@ -16,3 +16,4 @@ SaltwashAR uses:
 - PyTesser Optical Character Recognition to let the robot read out printed words
 - OpenCV object detection to let the robot watch television
 - Speech To Text and Pygame to let the robot translate phrases
+- Speech To Text and Text To Speech to let the robot be a talking calculator

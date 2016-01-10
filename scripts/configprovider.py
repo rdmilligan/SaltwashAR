@@ -37,3 +37,7 @@ class ConfigProvider:
     @property 
     def phrase_translation(self):
         return self.config.getboolean("Features", "PhraseTranslation")
+
+    @property
+    def calculator(self):
+        return self.config.getboolean("Features", "Calculator")
