@@ -17,3 +17,4 @@ SaltwashAR uses:
 - OpenCV object detection to let the robot watch television
 - Speech To Text and Pygame to let the robot translate phrases
 - Speech To Text and Text To Speech to let the robot be a talking calculator
+- Speech To Text, Text To Speech and Pygame to let the robot be a mixing desk

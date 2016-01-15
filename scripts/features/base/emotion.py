@@ -1,9 +1,12 @@
+# Copyright (C) 2015 Ross D Milligan
+# GNU GENERAL PUBLIC LICENSE Version 3 (full notice can be found at https://github.com/rdmilligan/SaltwashAR)
+
 from feature import Feature
 from constants import *
 from time import sleep
 
 class Emotion:
-  
+
     # initialize emotion
     def __init__(self):
         self.emotion = None
@@ -11,5 +14,5 @@ class Emotion:
     # display emotion
     def _display_emotion(self, emotion):
         self.emotion = emotion
-        sleep(EMOTION_DISPLAYTIME)
+        sleep(2)
         self.emotion = None
