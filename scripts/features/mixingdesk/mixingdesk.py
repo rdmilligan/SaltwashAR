@@ -29,7 +29,7 @@ class MixingDesk(Feature, Speaking):
         # user sings
         with sr.Microphone() as source:
             print "listening..."
-            audio = self.recognizer.listen(source).get_wav_data()
+            wav_data = self.recognizer.listen(source).get_wav_data()
 
         # check whether to stop thread
         if self.is_stop: return
@@ -45,7 +45,7 @@ class MixingDesk(Feature, Speaking):
         
         vocals = pygame.mixer.Channel(0)
         vocals.set_volume(0.8)       
-        vocals.play(pygame.mixer.Sound(audio))
+        vocals.play(pygame.mixer.Sound(wav_data))
 
         if self.GUITAR in instruments:
             guitar = pygame.mixer.Channel(1)
