@@ -12,14 +12,14 @@ class Features:
         if (config_provider.browser or config_provider.calculator or
             config_provider.hand_gesture or config_provider.happy_colour or
             config_provider.mixing_desk or config_provider.optical_character_recognition or
-            config_provider.play_your_cards_right):
+            config_provider.play_your_cards_right or config_provider.weather):
             from shared import TextToSpeech
             text_to_speech = TextToSpeech()
 
         speech_to_text = None
         if (config_provider.browser or config_provider.calculator or
             config_provider.mixing_desk or config_provider.phrase_translation or
-            config_provider.play_your_cards_right):
+            config_provider.play_your_cards_right or config_provider.weather):
             from shared import SpeechToText
             speech_to_text = SpeechToText()
 
@@ -68,6 +68,11 @@ class Features:
             from television import Television
             self.television = Television()
 
+        self.weather = None
+        if config_provider.weather:
+            from weather import Weather
+            self.weather = Weather(text_to_speech, speech_to_text)
+
     # indicate whether a feature is speaking
     def is_speaking(self):
         return ((self.browser and self.browser.is_speaking) or
@@ -77,7 +82,8 @@ class Features:
                 (self.mixing_desk and self.mixing_desk.is_speaking) or
                 (self.optical_character_recognition and self.optical_character_recognition.is_speaking) or
                 (self.phrase_translation and self.phrase_translation.is_speaking) or
-                (self.play_your_cards_right and self.play_your_cards_right.is_speaking))
+                (self.play_your_cards_right and self.play_your_cards_right.is_speaking) or
+                (self.weather and self.weather.is_speaking))
 
     # provide emotion from a feature
     def get_emotion(self):
@@ -106,6 +112,7 @@ class Features:
         self._handle_phrase_translation(sporty_robot)
         self._handle_play_your_cards_right(sporty_robot)
         self._handle_television(rocky_robot, sporty_robot, image)
+        self._handle_weather(rocky_robot, sporty_robot)
 
     # handle browser
     def _handle_browser(self, rocky_robot, sporty_robot):
@@ -189,3 +196,12 @@ class Features:
             self.television.start(image)
         else:
             self.television.stop()
+
+    # handle weather
+    def _handle_weather(self, rocky_robot, sporty_robot):
+        if not self.weather: return
+
+        if rocky_robot.is_facing or sporty_robot.is_facing:
+            self.weather.start()
+        else:
+            self.weather.stop()

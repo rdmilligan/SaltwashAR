@@ -48,3 +48,7 @@ class ConfigProvider:
     @property 
     def television(self):
         return self.config.getboolean("Features", "Television")
+
+    @property 
+    def weather(self):
+        return self.config.getboolean("Features", "Weather")

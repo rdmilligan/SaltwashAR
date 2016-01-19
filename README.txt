@@ -18,3 +18,4 @@ SaltwashAR uses:
 - Speech To Text and Pygame to let the robot translate phrases
 - Speech To Text and Text To Speech to let the robot be a talking calculator
 - Speech To Text, Text To Speech and Pygame to let the robot be a mixing desk
+- Speech To Text and Text To Speech to ask the robot for a world weather report
