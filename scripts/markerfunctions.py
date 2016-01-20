@@ -9,7 +9,7 @@ def order_points(points):
     s = points.sum(axis=1)
     diff = np.diff(points, axis=1)
     
-    ordered_points = np.zeros((4,2), dtype="float32")
+    ordered_points = np.zeros((4,2), dtype='float32')
 
     ordered_points[0] = points[np.argmin(s)]
     ordered_points[2] = points[np.argmax(s)]
@@ -37,7 +37,7 @@ def topdown_points(max_width, max_height):
         [0, 0],
         [max_width-1, 0],
         [max_width-1, max_height-1],
-        [0, max_height-1]], dtype="float32")
+        [0, max_height-1]], dtype='float32')
 
 def get_topdown_quad(image, src):
 
@@ -99,10 +99,10 @@ def get_vectors(image, points, mtx, dist):
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    imgp = np.array(points, dtype="float32")
+    imgp = np.array(points, dtype='float32')
 
     objp = np.array([[0.,0.,0.],[1.,0.,0.],
-                        [1.,1.,0.],[0.,1.,0.]], dtype="float32")  
+                        [1.,1.,0.],[0.,1.,0.]], dtype='float32')  
 
     # calculate rotation and translation vectors
     cv2.cornerSubPix(gray,imgp,(11,11),(-1,-1),criteria)

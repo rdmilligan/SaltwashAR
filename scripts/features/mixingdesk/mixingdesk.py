@@ -8,11 +8,11 @@ from time import sleep
 
 class MixingDesk(Feature, Speaking):
 
-    GUITAR = "guitar"
-    GUITAR_FILENAME = "scripts/features/mixingdesk/guitar.wav"
+    GUITAR = 'guitar'
+    GUITAR_FILENAME = 'scripts/features/mixingdesk/guitar.wav'
 
-    DRUMS = "drums"
-    DRUMS_FILENAME = "scripts/features/mixingdesk/drums.wav"
+    DRUMS = 'drums'
+    DRUMS_FILENAME = 'scripts/features/mixingdesk/drums.wav'
 
     def __init__(self, text_to_speech, speech_to_text):
         Feature.__init__(self)
@@ -70,6 +70,6 @@ class MixingDesk(Feature, Speaking):
 
     def _speech_to_text(self):
         text = self.speech_to_text.convert()
-        if not text: return ""
+        if not text: return ''
 
         return text.lower().split()

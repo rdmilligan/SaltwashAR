@@ -17,15 +17,15 @@ class HappyColour(Feature, Speaking, Emotion):
 
     def _load_config(self):
         config = ConfigParser.ConfigParser()
-        config.read("scripts/features/happycolour/happycolour.ini")
+        config.read('scripts/features/happycolour/happycolour.ini')
         
         # get colour range from config
-        self.lower_colour = np.array(map(int, config.get("Colour", "Lower").split(',')))
-        self.upper_colour = np.array(map(int, config.get("Colour", "Upper").split(',')))
+        self.lower_colour = np.array(map(int, config.get('Colour', 'Lower').split(',')))
+        self.upper_colour = np.array(map(int, config.get('Colour', 'Upper').split(',')))
 
         # get threshold from config
-        self.lower_threshold = config.getint("Threshold", "Lower")
-        self.upper_threshold = config.getint("Threshold", "Upper")
+        self.lower_threshold = config.getint('Threshold', 'Lower')
+        self.upper_threshold = config.getint('Threshold', 'Upper')
 
     def _thread(self, args):
         image = args

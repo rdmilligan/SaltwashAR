@@ -97,7 +97,7 @@ class SaltwashAR:
         bg_image = Image.fromarray(bg_image)     
         ix = bg_image.size[0]
         iy = bg_image.size[1]
-        bg_image = bg_image.tobytes("raw", "BGRX", 0, -1)
+        bg_image = bg_image.tobytes('raw', 'BGRX', 0, -1)
  
         # create background texture
         glBindTexture(GL_TEXTURE_2D, self.texture_background)
@@ -170,7 +170,7 @@ class SaltwashAR:
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
         glutInitWindowSize(640, 480)
         glutInitWindowPosition(800, 400)
-        self.window_id = glutCreateWindow("SaltwashAR")
+        self.window_id = glutCreateWindow('SaltwashAR')
         glutDisplayFunc(self._draw_scene)
         glutIdleFunc(self._draw_scene)
         self._init_gl()

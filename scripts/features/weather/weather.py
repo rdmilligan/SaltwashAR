@@ -13,20 +13,20 @@ class Weather(Feature, Speaking):
     
     WEATHER_API_KEY = None 
     WEATHER_API = 'http://api.worldweatheronline.com/free/v1/weather.ashx?q={}&format=json&num_of_days=5&key={}'
-    CLOUD = 'cloud'
+    CLOUDY_TERMS = ['partly cloudy', 'mist', 'fog', 'overcast']
 
     def __init__(self, text_to_speech, speech_to_text):
         Feature.__init__(self)
         Speaking.__init__(self, text_to_speech)
         self.speech_to_text = speech_to_text
-        self.is_cloud = False
+        self.is_cloudy = False
 
     # start thread
     def start(self, args=None):
         Feature.start(self, args)
  
         # enable fog if cloudy
-        if self.is_cloud:
+        if self.is_cloudy:
             glFogi(GL_FOG_MODE, GL_LINEAR)
             glFogfv(GL_FOG_COLOR, (0.5, 0.5, 0.5, 1.0))
             glFogf(GL_FOG_DENSITY, 0.35)
@@ -43,7 +43,7 @@ class Weather(Feature, Speaking):
         
         # disable fog
         glDisable(GL_FOG)
-        self.is_cloud = False
+        self.is_cloudy = False
 
     # run thread
     def _thread(self, args):
@@ -79,11 +79,11 @@ class Weather(Feature, Speaking):
         # inform user of weather
         weather_report = "The weather in {} is {}.".format(location, weather_description)
 
-        if self.CLOUD in weather_description:
-            self.is_cloud = True
+        if weather_description in self.CLOUDY_TERMS:
+            self.is_cloudy = True
             self._text_to_speech(weather_report + " It's real cloudy here.")
         else:
-            self.is_cloud = False
+            self.is_cloudy = False
             self._text_to_speech(weather_report + " Not a cloud in sight!")
 
         sleep(4)

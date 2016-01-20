@@ -9,7 +9,7 @@ def order_points(points):
     s = points.sum(axis=1)
     diff = np.diff(points, axis=1)
     
-    ordered_points = np.zeros((4,2), dtype="float32")
+    ordered_points = np.zeros((4,2), dtype='float32')
 
     ordered_points[0] = points[np.argmin(s)]
     ordered_points[2] = points[np.argmax(s)]
@@ -37,7 +37,7 @@ def topdown_points(max_width, max_height):
         [0, 0],
         [max_width-1, 0],
         [max_width-1, max_height-1],
-        [0, max_height-1]], dtype="float32")
+        [0, max_height-1]], dtype='float32')
 
 def get_topdown_quad(image, src):
 

@@ -28,8 +28,8 @@ class GameInteraction(Speaking):
  
     # 2 actions
     COMMAND = {
-        0.0: "lower",
-        1.0: "higher"
+        0.0: 'lower',
+        1.0: 'higher'
         }
  
     # 2 rewards
@@ -44,7 +44,7 @@ class GameInteraction(Speaking):
         self._text_to_speech("What card do you have?")
          
         # wait for user's response
-        response = ""
+        response = ''
         while response not in self.CARD:
             response = self._speech_to_text()
  
@@ -54,7 +54,7 @@ class GameInteraction(Speaking):
          
         # get command
         command_key = float(action)
-        command = ""
+        command = ''
  
         if command_key in self.COMMAND:
             command = self.COMMAND[command_key]
@@ -68,7 +68,7 @@ class GameInteraction(Speaking):
         self._text_to_speech("Did you win the turn?")
  
         # wait for user's response
-        response = ""
+        response = ''
         while response not in self.RESULT:
             response = self._speech_to_text()
  
@@ -76,6 +76,6 @@ class GameInteraction(Speaking):
 
     def _speech_to_text(self):
         text = self.speech_to_text.convert()
-        if not text: return ""
+        if not text: return ''
 
         return text.lower()

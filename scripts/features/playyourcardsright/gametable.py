@@ -6,7 +6,7 @@ import numpy
  
 class GameTable(ActionValueTable):
      
-    PARAMS_FILENAME = "scripts/features/playyourcardsright/params.npy"
+    PARAMS_FILENAME = 'scripts/features/playyourcardsright/params.npy'
  
     # load table parameters from file
     def loadParameters(self):
