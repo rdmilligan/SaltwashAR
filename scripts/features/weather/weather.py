@@ -12,7 +12,7 @@ class Weather(Feature, Speaking):
     # Attention: visit https://www.worldweatheronline.com/ to register for a free API key
     
     WEATHER_API_KEY = None 
-    WEATHER_API = 'http://api.worldweatheronline.com/free/v1/weather.ashx?q={}&format=json&num_of_days=5&key={}'
+    WEATHER_API = 'http://api.worldweatheronline.com/free/v1/weather.ashx?q={}&format=json&num_of_days=1&key={}'
     CLOUDY_TERMS = ['partly cloudy', 'mist', 'fog', 'overcast']
 
     def __init__(self, text_to_speech, speech_to_text):
@@ -84,6 +84,6 @@ class Weather(Feature, Speaking):
             self._text_to_speech(weather_report + " It's real cloudy here.")
         else:
             self.is_cloudy = False
-            self._text_to_speech(weather_report + " Not a cloud in sight!")
+            self._text_to_speech(weather_report)
 
         sleep(4)
