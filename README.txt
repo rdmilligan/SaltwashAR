@@ -6,16 +6,9 @@ To see what it can do, check out my 'SaltwashAR' video: https://youtu.be/saDeD26
 
 To help develop the application, check out my 'Adding a feature to SaltwashAR' post: https://rdmilligan.wordpress.com/2016/01/09/adding-a-feature-to-saltwashar/
 
-SaltwashAR uses:
-- OpenCV computer vision to detect a 2D marker in a webcam
-- OpenGL graphics library to render a robot upon the marker
-- Speech To Text and Text To Speech to ask the robot to search the web and read out the results
-- OpenCV Haar Feature-based Cascade Classifiers to let the robot respond to hand gestures
-- PyBrain Reinforcement Learning to let the robot master a card game
-- OpenCV colour detection to help the robot be happy
-- PyTesser Optical Character Recognition to let the robot read out printed words
-- OpenCV object detection to let the robot watch television
-- Speech To Text and Pygame to let the robot translate phrases
-- Speech To Text and Text To Speech to let the robot be a talking calculator
-- Speech To Text, Text To Speech and Pygame to let the robot be a mixing desk
-- Speech To Text and Text To Speech to ask the robot for a world weather report
+SaltwashAR uses OpenCV computer vision to detect a 2D marker in a webcam, and OpenGL graphics library to render a 3D robot upon the marker.
+
+We can interact with the robots:
+- ask a robot to search the web, translate phrases or provide a world weather report
+- let the robot learn a card game, be a talking calculator or a mixing desk
+- a robot can watch TV, respond to our hand gestures, read printed words or just be happy!

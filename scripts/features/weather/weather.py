@@ -69,7 +69,7 @@ class Weather(Feature, Speaking):
             object = json.load(response)
             weather_description = object['data']['current_condition'][0]['weatherDesc'][0]['value'].lower()
         except:
-            print ("Error getting weather")
+            print "Error getting weather"
 
         if not weather_description: return   
 
@@ -77,7 +77,7 @@ class Weather(Feature, Speaking):
         if self.is_stop: return
 
         # inform user of weather
-        weather_report = "The weather in {} is {}.".format(location, weather_description)
+        weather_report = 'The weather in {} is {}.'.format(location, weather_description)
 
         if weather_description in self.CLOUDY_TERMS:
             self.is_cloudy = True
