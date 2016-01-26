@@ -72,8 +72,8 @@ class Television(Feature):
                 
                 try:
                     marker_pattern = get_marker_pattern(topdown_quad, self.BLACK_THRESHOLD, self.WHITE_THRESHOLD)
-                except Exception as ex:
-                    print(ex)
+                except:
+                    continue
                 
                 if not marker_pattern: continue
 

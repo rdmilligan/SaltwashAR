@@ -169,7 +169,7 @@ class SaltwashAR:
         glutInit()
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
         glutInitWindowSize(640, 480)
-        glutInitWindowPosition(800, 400)
+        glutInitWindowPosition(100, 100)
         self.window_id = glutCreateWindow('SaltwashAR')
         glutDisplayFunc(self._draw_scene)
         glutIdleFunc(self._draw_scene)

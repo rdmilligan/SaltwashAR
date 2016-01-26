@@ -12,7 +12,8 @@ class Features:
         if (config_provider.browser or config_provider.calculator or
             config_provider.hand_gesture or config_provider.happy_colour or
             config_provider.mixing_desk or config_provider.optical_character_recognition or
-            config_provider.play_your_cards_right or config_provider.weather):
+            config_provider.play_your_cards_right or config_provider.slideshow or
+            config_provider.weather):
             from shared import TextToSpeech
             text_to_speech = TextToSpeech()
 
@@ -63,6 +64,11 @@ class Features:
             from playyourcardsright import PlayYourCardsRight
             self.play_your_cards_right = PlayYourCardsRight(text_to_speech, speech_to_text)
 
+        self.slideshow = None
+        if config_provider.slideshow:
+            from slideshow import Slideshow
+            self.slideshow = Slideshow(text_to_speech)
+
         self.television = None
         if config_provider.television:
             from television import Television
@@ -83,6 +89,7 @@ class Features:
                 (self.optical_character_recognition and self.optical_character_recognition.is_speaking) or
                 (self.phrase_translation and self.phrase_translation.is_speaking) or
                 (self.play_your_cards_right and self.play_your_cards_right.is_speaking) or
+                (self.slideshow and self.slideshow.is_speaking) or
                 (self.weather and self.weather.is_speaking))
 
     # provide emotion from a feature
@@ -96,8 +103,11 @@ class Features:
 
     # update background image from a feature
     def update_background_image(self, image):
-        if self.television and self.television.background_image.size > 0: 
+        if self.slideshow and self.slideshow.background_image.size > 0: 
+            return self.slideshow.background_image  
+        elif self.television and self.television.background_image.size > 0: 
             return self.television.background_image
+
         else:
             return image
 
@@ -111,6 +121,7 @@ class Features:
         self._handle_optical_character_recognition(rocky_robot, sporty_robot, image)
         self._handle_phrase_translation(sporty_robot)
         self._handle_play_your_cards_right(sporty_robot)
+        self._handle_slideshow(rocky_robot, sporty_robot, image)
         self._handle_television(rocky_robot, sporty_robot, image)
         self._handle_weather(rocky_robot, sporty_robot)
 
@@ -187,6 +198,15 @@ class Features:
             self.play_your_cards_right.start()
         else:
             self.play_your_cards_right.stop()
+
+    # handle slideshow
+    def _handle_slideshow(self, rocky_robot, sporty_robot, image):
+        if not self.slideshow: return
+
+        if rocky_robot.is_facing or sporty_robot.is_facing:
+            self.slideshow.start(image)
+        else:
+            self.slideshow.stop()
 
     # handle television
     def _handle_television(self, rocky_robot, sporty_robot, image):
