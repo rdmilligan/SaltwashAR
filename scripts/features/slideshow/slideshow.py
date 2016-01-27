@@ -33,10 +33,10 @@ class Slideshow(Feature, Speaking):
     def _get_slides_and_blurbs(self):
         os.chdir(self.FEATURE_PATH)
 
-        for slide in glob.glob("*.jpg"):
+        for slide in glob.glob('*.jpg'):
             self.slides.append(slide)
 
-        for blurb in glob.glob("*.txt"):
+        for blurb in glob.glob('*.txt'):
             self.blurbs.append(blurb)
 
         os.chdir(self.ROOT_PATH) 
@@ -52,8 +52,8 @@ class Slideshow(Feature, Speaking):
     def _thread(self, args):
         image = args
 
-        # check slideshow loaded
-        if not self.slides or not self.blurbs: return
+        # check slides loaded
+        if not self.slides: return
 
         # reset current item, if at end of slides
         if self.current_item >= len(self.slides): 
@@ -62,7 +62,9 @@ class Slideshow(Feature, Speaking):
         # get next slide and blurb, if at end of current blurb
         if not self.blurb_thread or not self.blurb_thread.is_alive():
             self.current_slide = cv2.imread('{}{}'.format(self.FEATURE_PATH, self.slides[self.current_item]))
-            blurb = open('{}{}'.format(self.FEATURE_PATH, self.blurbs[self.current_item]), "r").readline()
+
+            with open('{}{}'.format(self.FEATURE_PATH, self.blurbs[self.current_item]), 'r') as blurb_file:
+                blurb = blurb_file.readline()
             
             self.blurb_thread = Thread(target=self._blurb_thread, args=(blurb,))
             self.blurb_thread.start()           
@@ -75,11 +77,13 @@ class Slideshow(Feature, Speaking):
             image[self.SLIDE_OFFSET:slide_offset_and_height, self.SLIDE_OFFSET:slide_offset_and_width] = self.current_slide
             self.background_image = image
         else:
-            print "Unable to load slide as size larger than background image"
+            print "Unable to use slide as size larger than background image"
             self.background_image = np.array([])
 
     # blurb thread
     def _blurb_thread(self, blurb):
-        self._text_to_speech(blurb)
+        if blurb: 
+            self._text_to_speech(blurb)
+        
         self.current_item += 1
         sleep(4)
