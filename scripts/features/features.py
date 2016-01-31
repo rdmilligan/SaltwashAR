@@ -9,20 +9,26 @@ class Features:
     def __init__(self, config_provider):
 
         text_to_speech = None
-        if (config_provider.browser or config_provider.calculator or
-            config_provider.hand_gesture or config_provider.happy_colour or
-            config_provider.mixing_desk or config_provider.optical_character_recognition or
-            config_provider.play_your_cards_right or config_provider.slideshow or
-            config_provider.weather):
+        if (config_provider.acting or config_provider.browser or
+            config_provider.calculator or config_provider.hand_gesture or
+            config_provider.happy_colour or config_provider.mixing_desk or
+            config_provider.optical_character_recognition or config_provider.play_your_cards_right or
+            config_provider.slideshow or config_provider.weather):
             from shared import TextToSpeech
             text_to_speech = TextToSpeech()
 
         speech_to_text = None
-        if (config_provider.browser or config_provider.calculator or
-            config_provider.mixing_desk or config_provider.phrase_translation or
-            config_provider.play_your_cards_right or config_provider.weather):
+        if (config_provider.acting or config_provider.browser or
+            config_provider.calculator or config_provider.mixing_desk or
+            config_provider.phrase_translation or config_provider.play_your_cards_right or
+            config_provider.weather):
             from shared import SpeechToText
             speech_to_text = SpeechToText()
+
+        self.acting = None
+        if config_provider.acting:
+            from acting import Acting
+            self.acting = Acting(text_to_speech, speech_to_text)
 
         self.browser = None
         if config_provider.browser:
@@ -81,7 +87,8 @@ class Features:
 
     # indicate whether a feature is speaking
     def is_speaking(self):
-        return ((self.browser and self.browser.is_speaking) or
+        return ((self.acting and self.acting.is_speaking) or
+                (self.browser and self.browser.is_speaking) or
                 (self.calculator and self.calculator.is_speaking) or           
                 (self.hand_gesture and self.hand_gesture.is_speaking) or
                 (self.happy_colour and self.happy_colour.is_speaking) or                
@@ -94,7 +101,9 @@ class Features:
 
     # provide emotion from a feature
     def get_emotion(self):
-        if self.hand_gesture: 
+        if self.acting: 
+            return self.acting.emotion
+        elif self.hand_gesture: 
             return self.hand_gesture.emotion
         elif self.happy_colour: 
             return self.happy_colour.emotion
@@ -107,12 +116,12 @@ class Features:
             return self.slideshow.background_image  
         elif self.television and self.television.background_image.size > 0: 
             return self.television.background_image
-
         else:
             return image
 
     # handle features
     def handle(self, rocky_robot, sporty_robot, image):
+        self._handle_acting(rocky_robot, sporty_robot)
         self._handle_browser(rocky_robot, sporty_robot)
         self._handle_calculator(rocky_robot, sporty_robot)
         self._handle_hand_gesture(rocky_robot, sporty_robot, image)
@@ -124,6 +133,15 @@ class Features:
         self._handle_slideshow(rocky_robot, sporty_robot, image)
         self._handle_television(rocky_robot, sporty_robot, image)
         self._handle_weather(rocky_robot, sporty_robot)
+
+    # handle acting
+    def _handle_acting(self, rocky_robot, sporty_robot):
+        if not self.acting: return
+ 
+        if rocky_robot.is_facing or sporty_robot.is_facing:
+            self.acting.start()
+        else:
+            self.acting.stop()
 
     # handle browser
     def _handle_browser(self, rocky_robot, sporty_robot):

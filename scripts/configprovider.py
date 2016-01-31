@@ -14,6 +14,10 @@ class ConfigProvider:
         return self.config.getboolean('Enhancements', 'Animation')
 
     @property 
+    def acting(self):
+        return self.config.getboolean('Features', 'Acting')
+
+    @property 
     def browser(self):
         return self.config.getboolean('Features', 'Browser')
 
