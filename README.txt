@@ -2,7 +2,7 @@ SaltwashAR is a Python Augmented Reality application.
 
 Documentation can be found on my Wiki: https://github.com/rdmilligan/SaltwashAR/wiki
 
-To see what it can do, check out my 'SaltwashAR' video: https://youtu.be/saDeD26KRYo
+To see what it can do, check out my 'SaltwashAR' video: https://youtu.be/eq94uBBEVKo
 
 To help develop the application, check out my 'Adding a feature to SaltwashAR' post: https://rdmilligan.wordpress.com/2016/01/09/adding-a-feature-to-saltwashar/
 
