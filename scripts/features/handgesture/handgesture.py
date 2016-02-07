@@ -16,8 +16,8 @@ class HandGesture(Feature, Speaking, Emotion):
         image = args
 
         # detect hand gesture in image
-        is_okay = self._is_item_detected_in_image('scripts/features/handgesture/haarcascade_okaygesture.xml', image.copy())
-        is_vicky = self._is_item_detected_in_image('scripts/features/handgesture/haarcascade_vickygesture.xml', image.copy())
+        is_okay = self._is_item_detected_in_image('scripts/features/handgesture/haarcascade_okaygesture.xml', image)
+        is_vicky = self._is_item_detected_in_image('scripts/features/handgesture/haarcascade_vickygesture.xml', image)
 
         # check whether to stop thread
         if self.is_stop: return

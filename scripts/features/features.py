@@ -14,7 +14,7 @@ class Features:
             config_provider.happy_colour or config_provider.mixing_desk or
             config_provider.optical_character_recognition or config_provider.play_your_cards_right or
             config_provider.slideshow or config_provider.weather):
-            from shared import TextToSpeech
+            from texttospeech import TextToSpeech
             text_to_speech = TextToSpeech()
 
         speech_to_text = None
@@ -22,7 +22,7 @@ class Features:
             config_provider.calculator or config_provider.mixing_desk or
             config_provider.phrase_translation or config_provider.play_your_cards_right or
             config_provider.weather):
-            from shared import SpeechToText
+            from speechtotext import SpeechToText
             speech_to_text = SpeechToText()
 
         self.acting = None

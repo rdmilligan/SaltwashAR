@@ -77,13 +77,13 @@ class SaltwashAR:
         image = self.webcam.get_current_frame()
 
         # handle background
-        self._handle_background(image)
+        self._handle_background(image.copy())
 
         # handle markers
-        self._handle_markers(image)
+        self._handle_markers(image.copy())
        
         # handle features
-        self.features.handle(self.rocky_robot, self.sporty_robot, image)
+        self.features.handle(self.rocky_robot, self.sporty_robot, image.copy())
 
         glutSwapBuffers()
 
