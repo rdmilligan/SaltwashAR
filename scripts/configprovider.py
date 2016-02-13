@@ -50,6 +50,10 @@ class ConfigProvider:
         return self.config.getboolean('Features', 'PlayYourCardsRight')
 
     @property 
+    def shapes(self):
+        return self.config.getboolean('Features', 'Shapes')
+
+    @property 
     def slideshow(self):
         return self.config.getboolean('Features', 'Slideshow')
 

@@ -13,7 +13,8 @@ class Features:
             config_provider.calculator or config_provider.hand_gesture or
             config_provider.happy_colour or config_provider.mixing_desk or
             config_provider.optical_character_recognition or config_provider.play_your_cards_right or
-            config_provider.slideshow or config_provider.weather):
+            config_provider.shapes or config_provider.slideshow or 
+            config_provider.weather):
             from texttospeech import TextToSpeech
             text_to_speech = TextToSpeech()
 
@@ -70,6 +71,11 @@ class Features:
             from playyourcardsright import PlayYourCardsRight
             self.play_your_cards_right = PlayYourCardsRight(text_to_speech, speech_to_text)
 
+        self.shapes = None
+        if config_provider.shapes:
+            from shapes import Shapes
+            self.shapes = Shapes(text_to_speech)
+
         self.slideshow = None
         if config_provider.slideshow:
             from slideshow import Slideshow
@@ -96,6 +102,7 @@ class Features:
                 (self.optical_character_recognition and self.optical_character_recognition.is_speaking) or
                 (self.phrase_translation and self.phrase_translation.is_speaking) or
                 (self.play_your_cards_right and self.play_your_cards_right.is_speaking) or
+                (self.shapes and self.shapes.is_speaking) or
                 (self.slideshow and self.slideshow.is_speaking) or
                 (self.weather and self.weather.is_speaking))
 
@@ -112,6 +119,8 @@ class Features:
 
     # update background image from a feature
     def update_background_image(self, image):
+        if self.shapes and self.shapes.background_image.size > 0: 
+            return self.shapes.background_image  
         if self.slideshow and self.slideshow.background_image.size > 0: 
             return self.slideshow.background_image  
         elif self.television and self.television.background_image.size > 0: 
@@ -130,6 +139,7 @@ class Features:
         self._handle_optical_character_recognition(rocky_robot, sporty_robot, image)
         self._handle_phrase_translation(sporty_robot)
         self._handle_play_your_cards_right(sporty_robot)
+        self._handle_shapes(rocky_robot, sporty_robot, image)
         self._handle_slideshow(rocky_robot, sporty_robot, image)
         self._handle_television(rocky_robot, sporty_robot, image)
         self._handle_weather(rocky_robot, sporty_robot)
@@ -216,6 +226,15 @@ class Features:
             self.play_your_cards_right.start()
         else:
             self.play_your_cards_right.stop()
+
+    # handle shapes
+    def _handle_shapes(self, rocky_robot, sporty_robot, image):
+        if not self.shapes: return
+
+        if rocky_robot.is_facing or sporty_robot.is_facing:
+            self.shapes.start(image)
+        else:
+            self.shapes.stop()
 
     # handle slideshow
     def _handle_slideshow(self, rocky_robot, sporty_robot, image):
