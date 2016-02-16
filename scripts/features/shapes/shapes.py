@@ -66,12 +66,14 @@ class Shapes(Feature, Speaking):
 
         # find shape
         shape_contour = np.array([])
+        shape_points = 0
 
         for contour in contours:
             perimeter = cv2.arcLength(contour, True)
             approx = cv2.approxPolyDP(contour, 0.01*perimeter, True)
+            shape_points = len(approx)
 
-            if len(approx) == self.TRIANGULAR_POINTS or len(approx) == self.QUADRILATERAL_POINTS:
+            if shape_points == self.TRIANGULAR_POINTS or shape_points == self.QUADRILATERAL_POINTS:
                 shape_contour = contour
                 break       
 
@@ -86,7 +88,7 @@ class Shapes(Feature, Speaking):
             # draw pyramid or cube
             text = None
 
-            if len(approx) == self.TRIANGULAR_POINTS:
+            if shape_points == self.TRIANGULAR_POINTS:
                 self.is_pyramid = True
                 self.is_cube = False
                 text = "You have drawn a triangle, which has helped me build this lovely pyramid"
