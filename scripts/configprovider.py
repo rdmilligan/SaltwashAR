@@ -34,6 +34,10 @@ class ConfigProvider:
         return self.config.getboolean('Features', 'HappyColour')
 
     @property 
+    def iris_classifier(self):
+        return self.config.getboolean('Features', 'IrisClassifier')
+
+    @property 
     def mixing_desk(self):
         return self.config.getboolean('Features', 'MixingDesk')
 

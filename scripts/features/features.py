@@ -9,20 +9,20 @@ class Features:
     def __init__(self, config_provider):
 
         text_to_speech = None
-        if (config_provider.acting or config_provider.browser or
-            config_provider.calculator or config_provider.hand_gesture or
-            config_provider.happy_colour or config_provider.mixing_desk or
-            config_provider.optical_character_recognition or config_provider.play_your_cards_right or
-            config_provider.shapes or config_provider.slideshow or 
-            config_provider.weather):
+        if (config_provider.acting or config_provider.browser or 
+            config_provider.calculator or config_provider.hand_gesture or 
+            config_provider.happy_colour or config_provider.iris_classifier or
+            config_provider.mixing_desk or config_provider.optical_character_recognition or 
+            config_provider.play_your_cards_right or config_provider.shapes or 
+            config_provider.slideshow or config_provider.weather):
             from texttospeech import TextToSpeech
             text_to_speech = TextToSpeech()
 
         speech_to_text = None
         if (config_provider.acting or config_provider.browser or
-            config_provider.calculator or config_provider.mixing_desk or
-            config_provider.phrase_translation or config_provider.play_your_cards_right or
-            config_provider.weather):
+            config_provider.calculator or config_provider.iris_classifier or
+            config_provider.mixing_desk or config_provider.phrase_translation or 
+            config_provider.play_your_cards_right or config_provider.weather):
             from speechtotext import SpeechToText
             speech_to_text = SpeechToText()
 
@@ -50,6 +50,11 @@ class Features:
         if config_provider.happy_colour:
             from happycolour import HappyColour
             self.happy_colour = HappyColour(text_to_speech)
+
+        self.iris_classifier = None
+        if config_provider.iris_classifier:
+            from irisclassifier import IrisClassifier
+            self.iris_classifier = IrisClassifier(text_to_speech, speech_to_text)
 
         self.mixing_desk = None
         if config_provider.mixing_desk:
@@ -97,7 +102,8 @@ class Features:
                 (self.browser and self.browser.is_speaking) or
                 (self.calculator and self.calculator.is_speaking) or           
                 (self.hand_gesture and self.hand_gesture.is_speaking) or
-                (self.happy_colour and self.happy_colour.is_speaking) or                
+                (self.happy_colour and self.happy_colour.is_speaking) or
+                (self.iris_classifier and self.iris_classifier.is_speaking) or                
                 (self.mixing_desk and self.mixing_desk.is_speaking) or
                 (self.optical_character_recognition and self.optical_character_recognition.is_speaking) or
                 (self.phrase_translation and self.phrase_translation.is_speaking) or
@@ -119,6 +125,8 @@ class Features:
 
     # update background image from a feature
     def update_background_image(self, image):
+        if self.iris_classifier and self.iris_classifier.background_image.size > 0: 
+            return self.iris_classifier.background_image  
         if self.shapes and self.shapes.background_image.size > 0: 
             return self.shapes.background_image  
         if self.slideshow and self.slideshow.background_image.size > 0: 
@@ -135,6 +143,7 @@ class Features:
         self._handle_calculator(rocky_robot, sporty_robot)
         self._handle_hand_gesture(rocky_robot, sporty_robot, image)
         self._handle_happy_colour(rocky_robot, image)
+        self._handle_iris_classifier(rocky_robot, sporty_robot, image)
         self._handle_mixing_desk(rocky_robot)
         self._handle_optical_character_recognition(rocky_robot, sporty_robot, image)
         self._handle_phrase_translation(sporty_robot)
@@ -190,6 +199,15 @@ class Features:
             self.happy_colour.start(image)
         else:
             self.happy_colour.stop()
+
+    # handle iris classifier
+    def _handle_iris_classifier(self, rocky_robot, sporty_robot, image):
+        if not self.iris_classifier: return
+ 
+        if rocky_robot.is_facing or sporty_robot.is_facing:
+            self.iris_classifier.start(image)
+        else:
+            self.iris_classifier.stop()
 
     # handle mixing desk
     def _handle_mixing_desk(self, rocky_robot):

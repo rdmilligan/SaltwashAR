@@ -10,5 +10,5 @@ SaltwashAR uses OpenCV computer vision to detect a 2D marker in a webcam, and Op
 
 We can interact with the robots:
 - ask a robot to search the web, translate phrases, provide a world weather report or help us practice acting
-- let the robot learn a card game, give a slideshow, be a talking calculator or a mixing desk
+- let the robot learn a card game, classify iris flowers, give a slideshow, be a talking calculator or a mixing desk
 - a robot can watch TV, detect shapes, respond to our hand gestures, read printed words or just be happy!
