@@ -80,10 +80,10 @@ class IrisClassifier(Feature, Speaking):
 
         self._text_to_speech(request_message)
         
-        iris_data = self.speech_to_text.convert()
+        iris_measurement = self.speech_to_text.convert()
 
         try:
-            return float(iris_data)
+            return float(iris_measurement)
         except:
             return None
 
