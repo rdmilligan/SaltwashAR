@@ -9,18 +9,19 @@ class Features:
     def __init__(self, config_provider):
 
         text_to_speech = None
-        if (config_provider.acting or config_provider.browser or 
-            config_provider.calculator or config_provider.hand_gesture or 
-            config_provider.happy_colour or config_provider.iris_classifier or
-            config_provider.mixing_desk or config_provider.optical_character_recognition or 
-            config_provider.play_your_cards_right or config_provider.shapes or 
-            config_provider.slideshow or config_provider.weather):
+        if (config_provider.acting or config_provider.audio_classifier or 
+            config_provider.browser or config_provider.calculator or 
+            config_provider.hand_gesture or config_provider.happy_colour or 
+            config_provider.iris_classifier or config_provider.mixing_desk or 
+            config_provider.optical_character_recognition or config_provider.play_your_cards_right or 
+            config_provider.shapes or config_provider.slideshow or 
+            config_provider.weather):
             from texttospeech import TextToSpeech
             text_to_speech = TextToSpeech()
 
         speech_to_text = None
-        if (config_provider.acting or config_provider.browser or
-            config_provider.calculator or config_provider.iris_classifier or
+        if (config_provider.acting or config_provider.browser or 
+            config_provider.calculator or config_provider.iris_classifier or 
             config_provider.mixing_desk or config_provider.phrase_translation or 
             config_provider.play_your_cards_right or config_provider.weather):
             from speechtotext import SpeechToText
@@ -30,6 +31,11 @@ class Features:
         if config_provider.acting:
             from acting import Acting
             self.acting = Acting(text_to_speech, speech_to_text)
+
+        self.audio_classifier = None
+        if config_provider.audio_classifier:
+            from audioclassifier import AudioClassifier
+            self.audio_classifier = AudioClassifier(text_to_speech)
 
         self.browser = None
         if config_provider.browser:
@@ -99,6 +105,7 @@ class Features:
     # indicate whether a feature is speaking
     def is_speaking(self):
         return ((self.acting and self.acting.is_speaking) or
+                (self.audio_classifier and self.audio_classifier.is_speaking) or
                 (self.browser and self.browser.is_speaking) or
                 (self.calculator and self.calculator.is_speaking) or           
                 (self.hand_gesture and self.hand_gesture.is_speaking) or
@@ -139,6 +146,7 @@ class Features:
     # handle features
     def handle(self, rocky_robot, sporty_robot, image):
         self._handle_acting(rocky_robot, sporty_robot)
+        self._handle_audio_classifier(rocky_robot, sporty_robot)
         self._handle_browser(rocky_robot, sporty_robot)
         self._handle_calculator(rocky_robot, sporty_robot)
         self._handle_hand_gesture(rocky_robot, sporty_robot, image)
@@ -161,6 +169,15 @@ class Features:
             self.acting.start()
         else:
             self.acting.stop()
+
+    # handle audio classifier
+    def _handle_audio_classifier(self, rocky_robot, sporty_robot):
+        if not self.audio_classifier: return
+
+        if rocky_robot.is_facing or sporty_robot.is_facing:
+            self.audio_classifier.start()
+        else:
+            self.audio_classifier.stop()
 
     # handle browser
     def _handle_browser(self, rocky_robot, sporty_robot):

@@ -18,6 +18,10 @@ class ConfigProvider:
         return self.config.getboolean('Features', 'Acting')
 
     @property 
+    def audio_classifier(self):
+        return self.config.getboolean('Features', 'AudioClassifier')
+
+    @property 
     def browser(self):
         return self.config.getboolean('Features', 'Browser')
 
