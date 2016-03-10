@@ -4,7 +4,7 @@
 import cv2
 import numpy as np
 
-def order_points(points):
+def _order_points(points):
 
     s = points.sum(axis=1)
     diff = np.diff(points, axis=1)
@@ -18,7 +18,7 @@ def order_points(points):
 
     return ordered_points
 
-def max_width_height(points):
+def _max_width_height(points):
 
     (tl, tr, br, bl) = points
 
@@ -32,7 +32,7 @@ def max_width_height(points):
 
     return (max_width, max_height)
 
-def topdown_points(max_width, max_height):
+def _topdown_points(max_width, max_height):
     return np.array([
         [0, 0],
         [max_width-1, 0],
@@ -42,14 +42,14 @@ def topdown_points(max_width, max_height):
 def get_topdown_quad(image, src):
 
     # src and dst points
-    src = order_points(src)
+    src = _order_points(src)
 
-    (max_width,max_height) = max_width_height(src)
-    dst = topdown_points(max_width, max_height)
+    (max_width,max_height) = _max_width_height(src)
+    dst = _topdown_points(max_width, max_height)
  
     # warp perspective
     matrix = cv2.getPerspectiveTransform(src, dst)
-    warped = cv2.warpPerspective(image, matrix, max_width_height(src))
+    warped = cv2.warpPerspective(image, matrix, _max_width_height(src))
 
     return warped
 
@@ -92,7 +92,7 @@ def get_marker_pattern(image, black_threshold, white_threshold):
 def get_vectors(image, points, mtx, dist):
     
     # order points
-    points = order_points(points)
+    points = _order_points(points)
 
     # set up criteria, image, points and axis
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)

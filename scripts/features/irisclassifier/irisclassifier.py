@@ -44,7 +44,7 @@ class IrisClassifier(Feature, Speaking):
     # run thread
     def _thread(self, args):
 
-        # reqest iris data from user
+        # request iris data from user
         sepal_length = self._request_iris_measurement("What is the sepal length in centimetres?")
         sepal_width =  self._request_iris_measurement("What is the sepal width in centimetres?")
         petal_length =  self._request_iris_measurement("What is the petal length in centimetres?")
