@@ -11,19 +11,20 @@ class Features:
         text_to_speech = None
         if (config_provider.acting or config_provider.audio_classifier or 
             config_provider.browser or config_provider.calculator or 
-            config_provider.hand_gesture or config_provider.happy_colour or 
-            config_provider.iris_classifier or config_provider.mixing_desk or 
-            config_provider.optical_character_recognition or config_provider.play_your_cards_right or 
-            config_provider.shapes or config_provider.slideshow or 
-            config_provider.weather):
+            config_provider.fruit_machine or config_provider.hand_gesture or 
+            config_provider.happy_colour or config_provider.iris_classifier or 
+            config_provider.mixing_desk or config_provider.optical_character_recognition or 
+            config_provider.play_your_cards_right or config_provider.shapes or 
+            config_provider.slideshow or config_provider.weather):
             from texttospeech import TextToSpeech
             text_to_speech = TextToSpeech()
 
         speech_to_text = None
         if (config_provider.acting or config_provider.browser or 
-            config_provider.calculator or config_provider.iris_classifier or 
-            config_provider.mixing_desk or config_provider.phrase_translation or 
-            config_provider.play_your_cards_right or config_provider.weather):
+            config_provider.calculator or config_provider.fruit_machine or
+            config_provider.iris_classifier or config_provider.mixing_desk or 
+            config_provider.phrase_translation or config_provider.play_your_cards_right or 
+            config_provider.weather):
             from speechtotext import SpeechToText
             speech_to_text = SpeechToText()
 
@@ -46,6 +47,11 @@ class Features:
         if config_provider.calculator:
             from calculator import Calculator
             self.calculator = Calculator(text_to_speech, speech_to_text)
+
+        self.fruit_machine = None
+        if config_provider.fruit_machine:
+            from fruitmachine import FruitMachine
+            self.fruit_machine = FruitMachine(text_to_speech, speech_to_text)
 
         self.hand_gesture = None
         if config_provider.hand_gesture:
@@ -107,7 +113,8 @@ class Features:
         return ((self.acting and self.acting.is_speaking) or
                 (self.audio_classifier and self.audio_classifier.is_speaking) or
                 (self.browser and self.browser.is_speaking) or
-                (self.calculator and self.calculator.is_speaking) or           
+                (self.calculator and self.calculator.is_speaking) or 
+                (self.fruit_machine and self.fruit_machine.is_speaking) or       
                 (self.hand_gesture and self.hand_gesture.is_speaking) or
                 (self.happy_colour and self.happy_colour.is_speaking) or
                 (self.iris_classifier and self.iris_classifier.is_speaking) or                
@@ -123,25 +130,29 @@ class Features:
     def get_emotion(self):
         if self.acting: 
             return self.acting.emotion
-        elif self.hand_gesture: 
+        if self.fruit_machine: 
+            return self.fruit_machine.emotion
+        if self.hand_gesture: 
             return self.hand_gesture.emotion
-        elif self.happy_colour: 
+        if self.happy_colour: 
             return self.happy_colour.emotion
-        else:
-            return None
+
+        return None
 
     # update background image from a feature
     def update_background_image(self, image):
+        if self.fruit_machine and self.fruit_machine.background_image.size > 0: 
+            return self.fruit_machine.background_image 
         if self.iris_classifier and self.iris_classifier.background_image.size > 0: 
             return self.iris_classifier.background_image  
         if self.shapes and self.shapes.background_image.size > 0: 
             return self.shapes.background_image  
         if self.slideshow and self.slideshow.background_image.size > 0: 
             return self.slideshow.background_image  
-        elif self.television and self.television.background_image.size > 0: 
+        if self.television and self.television.background_image.size > 0: 
             return self.television.background_image
-        else:
-            return image
+        
+        return image
 
     # handle features
     def handle(self, rocky_robot, sporty_robot, image):
@@ -149,6 +160,7 @@ class Features:
         self._handle_audio_classifier(rocky_robot, sporty_robot)
         self._handle_browser(rocky_robot, sporty_robot)
         self._handle_calculator(rocky_robot, sporty_robot)
+        self._handle_fruit_machine(sporty_robot, image)
         self._handle_hand_gesture(rocky_robot, sporty_robot, image)
         self._handle_happy_colour(rocky_robot, image)
         self._handle_iris_classifier(rocky_robot, sporty_robot, image)
@@ -198,6 +210,15 @@ class Features:
             self.calculator.start()
         else:
             self.calculator.stop()
+
+    # handle fruit machine
+    def _handle_fruit_machine(self, sporty_robot, image):
+        if not self.fruit_machine: return
+
+        if sporty_robot.is_facing:
+            self.fruit_machine.start(image)
+        else:
+            self.fruit_machine.stop()
 
     # handle hand gesture
     def _handle_hand_gesture(self, rocky_robot, sporty_robot, image):

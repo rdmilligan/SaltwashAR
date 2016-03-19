@@ -29,6 +29,10 @@ class ConfigProvider:
     def calculator(self):
         return self.config.getboolean('Features', 'Calculator')
 
+    @property
+    def fruit_machine(self):
+        return self.config.getboolean('Features', 'FruitMachine')
+
     @property 
     def hand_gesture(self):
         return self.config.getboolean('Features', 'HandGesture')
