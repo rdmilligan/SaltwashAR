@@ -73,7 +73,7 @@ def is_reels_win(reels):
 def draw_holds(holds, image):
     
     for hold in holds:
-        if not hold: continue
+        if hold == None: continue
 
         if hold == 0:
             cv2.line(image, (120,300), (200,300), (0,255,0), 2)
