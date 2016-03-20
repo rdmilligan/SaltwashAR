@@ -1,4 +1,4 @@
-# Copyright (C) 2015 Ross D Milligan
+# Copyright (C) 2016 Ross D Milligan
 # GNU GENERAL PUBLIC LICENSE Version 3 (full notice can be found at https://github.com/rdmilligan/SaltwashAR)
 
 import random
@@ -36,8 +36,7 @@ def rotate_reels(reels):
 
     for i, reel in enumerate(reels):
 
-        if not reel: continue
-        if reel['current_rotation'] == reel['total_rotation']: continue
+        if not reel or (reel['current_rotation'] == reel['total_rotation']): continue
 
         next_rotation = reel['current_rotation'] + reel['speed']
 
@@ -74,7 +73,8 @@ def is_reels_win(reels):
 def draw_holds(holds, image):
     
     for hold in holds:
-       
+        if not hold: continue
+
         if hold == 0:
             cv2.line(image, (120,300), (200,300), (0,255,0), 2)
         elif hold == 1:

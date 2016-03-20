@@ -1,4 +1,4 @@
-# Copyright (C) 2015 Ross D Milligan
+# Copyright (C) 2016 Ross D Milligan
 # GNU GENERAL PUBLIC LICENSE Version 3 (full notice can be found at https://github.com/rdmilligan/SaltwashAR)
 
 from OpenGL.GL import *
@@ -61,7 +61,7 @@ def draw_cube(rotation):
         gl_list_cube = glGenLists(1)
         glNewList(gl_list_cube, GL_COMPILE) 
              
-        glBegin(GL_QUADS);  
+        glBegin(GL_QUADS)
         glColor3f(0.0,1.0,0.0)
         glVertex3f(1.0,1.0,-1.0)
         glVertex3f(-1.0,1.0,-1.0)
