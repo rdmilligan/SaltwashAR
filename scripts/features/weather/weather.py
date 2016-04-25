@@ -67,7 +67,7 @@ class Weather(Feature, Speaking):
         try:
             response = urlopen(url)
             object = json.load(response)
-            weather_description = object['data']['current_condition'][0]['weatherDesc'][0]['value'].lower()
+            weather_description = object['data']['current_condition'][0]['weatherDesc'][0]['value'].strip().lower()
         except:
             print "Error getting weather"
 
